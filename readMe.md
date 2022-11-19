@@ -10,4 +10,4 @@
 ## Branchs
 * master (default)
 * release (pre production test)
-* feature-dev(development)
+* feature-dev(development).
