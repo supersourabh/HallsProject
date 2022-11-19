@@ -1,0 +1,39 @@
+{
+  "name": "pickmycode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^10.4.11",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.0",
+    "bootstrap": "^5.2.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
+    "date-and-time": "^2.4.1",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
+    "express-session": "^1.17.3",
+    "fast-gateway": "^3.4.2",
+    "imagekit": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^10.0.0",
+    "razorpay": "^2.8.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.1.8"
+  },
+  "scripts": {
+    "build": "postcss ./backend/views/css/tailwind.css -o ./backend/views/css/output.css",
+    "start": "nodemon backend/server.js --watch backend/**/**/**/*"
+  },
+  "author": "",
+  "license": "ISC"
+}

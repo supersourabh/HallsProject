@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/output.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Login | CakeHalls.in</title>
+</head>
+
+<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+
+    <%- include("../templates/header.ejs") %>
+
+        <main class="flex flex-col justify-center items-center">
+            <div class="p-5">
+                <h1 class="text-5xl font-bold text-gray-700"> Welcome to CakeHalls </h1>
+                <h1 class="text-green-700"> *Please authenticate yourself for booking process. </h1>
+            </div>
+            <div
+                class="flex flex-col justify-center items-center lg:flex-row w-3/4 h-3/5 backdrop-blur-lg shadow-lg m-3 lg:m-5 border-2 border-pink-500">
+
+                <div class="w-1/2  flex justify-center lg:border-r-2 lg:border-pink-500 items-start py-5 lg:py-10">
+                    <form
+                        action="/user/login<% if(redirectUrl) {%>?redirectUrl=+<%= redirectUrl %>&data=<%= pids %><%}%>"
+                        method="post">
+                        <ul class="flex justify-center items-center flex-col">
+                            <li class="flex justify-center items-start">
+                                <div class="w-28 h-28 overflow-hidden">
+                                    <img src="/male_login.svg" alt="login">
+                                </div>
+                            </li>
+                            <li class="flex flex-col pt-5">
+                                <label for="mobile">
+                                    Mobile <span class="text-red-700">*</span>
+                                </label>
+                                <div class="flex border-2 border-gray-500 p-3 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="#ED64A6" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-user">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <input required class="bg-transparent border-b-2  border-pink-500 mx-2 outline-none"
+                                        placeholder="ex : 1234567890" minlength=10 type="text" name="mobile"
+                                        id="mobile">
+                                </div>
+                            </li>
+                            <li class="flex flex-col py-5">
+                                <label for="password">
+                                    Password <span class="text-red-700">*</span>
+                                </label>
+                                <div class="flex border-2 border-gray-500 p-3 rounded-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="#ED64A6" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-lock">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    <input required class="bg-transparent border-b-2 border-pink-500 mx-2 outline-none"
+                                        placeholder="xyz@#$123" minlength=8 type="password" name="password"
+                                        id="password">
+
+                                </div>
+                                <a class="text-sm text-blue-700" href="/password_reset">
+                                    forgot password?
+                                </a>
+                            </li>
+                            <li class="w-full">
+
+                                <button type="submit"
+                                    class="w-full bg-green-700 text-white font-bold p-3 rounded-lg ">Login</button>
+
+                            </li>
+                            <li class="flex justify-start flex-col">
+                                <div>
+                                    if not registered?<a href="/user/signup" class="text-blue-700"> signup here</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <div class="hidden w-1/2 shadow-lg lg:flex justify-center items-center">
+                    <div class="w-4/5 h-4/5 p-20">
+                        <img src="/login_page_design.svg" alt="login">
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include("../templates/footer.ejs") %>
+
+</body>
+
+</html>

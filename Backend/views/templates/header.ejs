@@ -1,0 +1,66 @@
+<header
+    class="z-50 flex flex-col lg:flex-row backdrop-blur-md shadow-lg border-b-2 text-white justify-between align-middle top-0 sticky">
+
+    <ul class="flex-1 flex justify-center items-center m-2 lg:px-10">
+        <li class="flex-none flex flex-col justify-start">
+            <div class="border-b-2 w-10 my-1"></div>
+            <div class="border-b-2 w-10 my-2"></div>
+            <div class="border-b-2 w-10 my-1"></div>
+        </li>
+        <li class="flex-1 flex justify-center items-center">
+            <a class="text-4xl font-bold px-10" href="/">CakeHalls<span class="text-xl">.in</span></a>
+        </li>
+    </ul>
+    <ul class="flex-1 flex justify-center items-center sm:flex-0 m-2">
+        <li class="flex flex-row border-2 rounded-xl py-2" style="width : 100%">
+            <label class="px-3" for="search">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+            </label>
+            <form action="/" method="POST" class="border-l-2 w-full px-3">
+
+                <input class="bg-transparent outline-none w-full placeholder-white" id="search" name="search"
+                    placeholder="Search the code here">
+            </form>
+        </li>
+    </ul>
+    <ul class="flex-1 flex flex-row justify-center items-center m-2 lg:p-2">
+        <li class="flex justify-center align-middle px-3">
+            <a class="rounded hover:shadow-lg p-2 duration-300" href="/#home"> Home</a>
+        </li>
+        <li class="flex justify-center align-middle px-3">
+            <a class="p-2 duration-300 hover:shadow-lg" href="/#products"> Products</a>
+        </li>
+        <li class="flex justify-center align-middle px-3">
+            <a class="p-2 duration-300 hover:shadow-lg" href="/#footer"> About</a>
+        </li>
+
+        <li class=" flex justify-center align-middle px-3 border-2 p-2 rounded-lg hover:shadow-lg">
+            <a id="username" class="p-2 duration-300 truncate text-gray-700" href="/#"> Login</a>
+            <img id="userProfile" class="rounded-full w-10 h-10 shadow-lg" src="" alt="profile">
+        </li>
+
+    </ul>
+    <script>
+        let user = JSON.parse(JSON.parse(localStorage.getItem('halls-user')))
+        let profile = document.getElementById("userProfile")
+        let name = document.getElementById("username")
+
+        if (user) {
+            name.innerText = user.first_name + " " + user.last_name
+            name.href = '/user/profile?id=' + user.id
+            if (user.profile != "") {
+                profile.src = user.profile
+            } else {
+                profile.src = 'https://ik.imagekit.io/bdhalls/avatar_1__ZpY4hyH-9.jpg?updatedAt=1668530533570&ik-s=dc1ad38860336462132e15f7f0c7483a9727a2f9'
+            }
+        } else {
+            profile.parentNode.removeChild(profile);
+            name.href = '/user/login';
+            name.innerText = "Login";
+        }
+    </script>
+</header>

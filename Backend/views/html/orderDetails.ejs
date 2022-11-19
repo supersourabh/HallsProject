@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/output.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Order Details | CakeHalls.in</title>
+</head>
+
+<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+
+    <%- include("../templates/header.ejs") %>
+
+        <main class="flex flex-col m-3 p-2 blur-lg">
+            <section class="shadow-lg  p-2 overflow-hidden border-2 border-gray-500 rounded-lg">
+                <div
+                    class="w-full truncate font-semibold text-gray-600 text-start backdrop-blur-sm p-3 rounded-lg flex items-center">
+                    <span>
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="35" height="35" viewBox="0 0 115.35 122.88"
+                            style="enable-background:new 0 0 115.35 122.88">
+                            <g>
+                                <path
+                                    d="M25.27,86.92c-1.81,0-3.26-1.46-3.26-3.26s1.47-3.26,3.26-3.26h21.49c1.81,0,3.26,1.46,3.26,3.26s-1.46,3.26-3.26,3.26 H25.27L25.27,86.92L25.27,86.92z M61.1,77.47c-0.96,0-1.78-0.82-1.78-1.82c0-0.96,0.82-1.78,1.78-1.78h4.65c0.04,0,0.14,0,0.18,0 c1.64,0.04,3.1,0.36,4.33,1.14c1.37,0.87,2.37,2.19,2.92,4.15c0,0.04,0,0.09,0.05,0.14l0.46,1.82h39.89c1,0,1.78,0.82,1.78,1.78 c0,0.18-0.05,0.36-0.09,0.55l-4.65,18.74c-0.18,0.82-0.91,1.37-1.73,1.37l0,0l-29.18,0c0.64,2.37,1.28,3.65,2.14,4.24 c1.05,0.68,2.87,0.73,5.93,0.68h0.04l0,0h20.61c1,0,1.78,0.82,1.78,1.78c0,1-0.82,1.78-1.78,1.78H87.81l0,0 c-3.79,0.04-6.11-0.05-7.98-1.28c-1.92-1.28-2.92-3.46-3.92-7.43l0,0L69.8,80.2c0-0.05,0-0.05-0.04-0.09 c-0.27-1-0.73-1.69-1.37-2.05c-0.64-0.41-1.5-0.59-2.51-0.59c-0.05,0-0.09,0-0.14,0H61.1L61.1,77.47L61.1,77.47z M103.09,114.13 c2.42,0,4.38,1.96,4.38,4.38s-1.96,4.38-4.38,4.38s-4.38-1.96-4.38-4.38S100.67,114.13,103.09,114.13L103.09,114.13L103.09,114.13z M83.89,114.13c2.42,0,4.38,1.96,4.38,4.38s-1.96,4.38-4.38,4.38c-2.42,0-4.38-1.96-4.38-4.38S81.48,114.13,83.89,114.13 L83.89,114.13L83.89,114.13z M25.27,33.58c-1.81,0-3.26-1.47-3.26-3.26c0-1.8,1.47-3.26,3.26-3.26h50.52 c1.81,0,3.26,1.46,3.26,3.26c0,1.8-1.46,3.26-3.26,3.26H25.27L25.27,33.58L25.27,33.58z M7.57,0h85.63c2.09,0,3.99,0.85,5.35,2.21 s2.21,3.26,2.21,5.35v59.98h-6.5V7.59c0-0.29-0.12-0.56-0.31-0.76c-0.2-0.19-0.47-0.31-0.76-0.31l0,0H7.57 c-0.29,0-0.56,0.12-0.76,0.31S6.51,7.3,6.51,7.59v98.67c0,0.29,0.12,0.56,0.31,0.76s0.46,0.31,0.76,0.31h55.05 c0.61,2.39,1.3,4.48,2.23,6.47H7.57c-2.09,0-3.99-0.85-5.35-2.21C0.85,110.24,0,108.34,0,106.25V7.57c0-2.09,0.85-4,2.21-5.36 S5.48,0,7.57,0L7.57,0L7.57,0z M25.27,60.25c-1.81,0-3.26-1.46-3.26-3.26s1.47-3.26,3.26-3.26h50.52c1.81,0,3.26,1.46,3.26,3.26 s-1.46,3.26-3.26,3.26H25.27L25.27,60.25L25.27,60.25z" />
+                            </g>
+                        </svg>
+                    </span>
+                    <span class="lg:text-2xl font-bold text-gray-700">Order | </span>
+
+                    <span class="p-2 w-4/5 truncate">
+                        order_<%= order.id %>
+                    </span>
+                </div>
+            </section>
+
+            <section class="flex flex-col lg:flex-row bg-black-500 ">
+                <!-- order details -->
+                <section class="lg:w-1/2 lg:mr-2 my-2">
+                    <ul
+                        class="w-full border-2 border-gray-500 rounded-lg overflow-hidden lg:my-5 text-gray-700 shadow-lg">
+                        <div
+                            class="px-5 py-3 text-3xl text-white font-bold w-full border-b-2 border-gray-500 bg-yellow-500">
+                            <h1>Order Details</h1>
+                        </div>
+                        <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                            <div class="w-1/2 font-bold">
+                                Outlet Id
+                            </div>
+                            <div class="w-1/2 ">
+                                <%= order.outletId %>
+                            </div>
+                        </li>
+                        <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                            <div class="w-1/2 font-bold">
+                                Date of Order
+                            </div>
+                            <div class="w-1/2 ">
+                                <%= order.date.toISOString().split("T")[0] %>,<%=
+                                        order.date.toISOString().split("T")[1].slice(0,8) %>
+                            </div>
+                        </li>
+                        <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                            <div class="w-1/2 font-bold">
+                                Slot
+                            </div>
+                            <div class="w-1/2 ">
+                                <%= order.slot %>
+                            </div>
+                        </li>
+                        <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                            <div class="w-1/2 font-bold">
+                                Amount Paid
+                            </div>
+                            <div class="w-1/2 text-lg text-green-500 font-bold">
+                                ₹<%= order.price %>
+                            </div>
+                        </li>
+                        <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                            <div class="w-1/2 font-bold">
+                                Payment Id
+                            </div>
+                            <div class="w-1/2 text-lg ">
+                                <%= order.rzpPaymentId %>
+                            </div>
+                        </li>
+
+                    </ul>
+                </section>
+
+                <!-- products details -->
+
+                <section class="lg:w-1/2 lg:ml-2 my-2">
+                    <ul
+                        class="w-full border-2 border-gray-500 rounded-lg overflow-hidden lg:my-5 text-gray-700 shadow-lg">
+                        <div class="px-5 py-3 text-3xl text-white font-bold  border-b-2 border-gray-500 bg-pink-500">
+                            <h1>Additional Products</h1>
+                        </div>
+                        <% if(products.length==0) {%>
+                            <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                                <div class="flex-1 flex justify-center items-center ">
+                                    😔 No additional products added, only default products are selected !
+                                </div>
+                            </li>
+                            <%}else{%>
+                                <% for(let i=0 ; i< products.length ; i++){ %>
+                                    <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
+                                        <div class="flex-1 flex justify-center items-center ">
+                                            <img class="rounded-lg" width="50px" height="50px"
+                                                src="<%= products[i].image %>" alt="">
+                                        </div>
+                                        <div class="flex-1 text-center">
+                                            <%= products[i].name %>
+                                        </div>
+                                        <div class="flex-1 text-center">
+                                            ₹<%= products[i].price %>
+                                        </div>
+                                    </li>
+                                    <% } %>
+                                        <li class="flex bg-gray-300 text-green-700 font-bold p-5 px-2 m-1 rounded-lg">
+                                            <div class="flex-1 flex justify-center items-center ">
+                                                Item Total
+                                            </div>
+                                            <div class="flex-1 text-center">
+                                            </div>
+                                            <div class="flex-1 text-center">
+                                                ₹<%= itemTotal %>
+                                            </div>
+                                        </li>
+                                        <%}%>
+                                            <li
+                                                class="flex <%= order.status=='Attended'?'bg-green-200 text-green-700' : 'bg-red-300 text-red-700' %> p-5 px-2 m-1 rounded-lg">
+                                                <div class="w-1/2 font-bold">
+                                                    Status
+                                                </div>
+                                                <div class="w-1/2 ">
+
+                                                    <div
+                                                        class="p-2 py-1 flex w-fit font-semibold shadow-lg rounded-lg text-white <%= order.status=='Attended'?'bg-green-700':'bg-red-500'%>">
+                                                        <%if(order.status=='Attended'){%>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-check-circle">
+                                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                            </svg>
+                                                            <%}else{%>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-clock">
+                                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                                                </svg>
+                                                                <%}%>
+                                                                    <span class="px-2">
+                                                                        <%= order.status %>
+                                                                    </span>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                    </ul>
+                </section>
+            </section>
+            <section class="shadow-lg  p-2  rounded-lg flex justify-center items-center">
+                <a href="/"
+                    class="w-fit overflow-scroll shadow-lg border-2 border-green-500 font-semibold text-green-600 text-start backdrop-blur-sm p-3 rounded-lg flex items-center justify-center truncate">
+                    <span class="mx-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" stroke="green" fill="#ccf" width="32.236" height="32">
+                            <path
+                                d="M1.656 17.756 16 5.324l14.344 12.432a1.001 1.001 0 0 0 1.312-1.512l-15-13a1 1 0 0 0-1.31 0L10 7.876V6a2 2 0 0 0-4 0v5.342L.344 16.244a1.003 1.003 0 0 0-.1 1.412c.364.416.994.462 1.412.1zM12 22h8v10h6a2 2 0 0 0 2-2v-9.802c0-.6-.268-1.166-.732-1.546l-10-8.198a1.996 1.996 0 0 0-2.536 0l-10 8.198A1.993 1.993 0 0 0 4 20.198V30a2 2 0 0 0 2 2h6V22z" />
+                        </svg>
+                    </span>
+                    <span>Home</span>
+                </a>
+            </section>
+        </main>
+        <%- include("../templates/footer.ejs") %>
+
+</body>
+
+</html>

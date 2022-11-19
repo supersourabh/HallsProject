@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/output.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>
+        Products | CakeHalls.in
+    </title>
+</head>
+
+<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" onload="removeLC()" style="scrollbar-width: none;">
+
+    <%- include("../templates/header.ejs") %>
+
+        <main class="w-full py-5 flex flex-col justify-center items-start">
+
+            <%- include("../templates/cakes.ejs") %>
+                <%- include("../templates/hats.ejs") %>
+                    <%- include("../templates/propz.ejs") %>
+                        <div class="w-full flex justify-center items-center border-t-2 m-3 pt-5">
+                            <button id="go" class=" border-2 px-5 py-3 text-white font-bold rounded-md hover:bg-gray-500">
+                                <img src="/cart.svg" alt="cart">cart
+                            </button>
+                            
+                        </div>
+
+                        <script>
+
+                            function removeLC() {
+                                localStorage.clear("cake");
+                                localStorage.clear("hat");
+                                localStorage.clear("propz");
+                            }
+
+                            document.getElementById("go").onclick = () => {
+                                let cake = JSON.parse(localStorage.getItem("cake"));
+                                let hat = JSON.parse(localStorage.getItem("hat"));
+                                let propz = JSON.parse(localStorage.getItem("propz"));
+                                window.location.href = "/cart?cake=" + cake + "&hat=" + hat + "&propz=" + propz;
+                            }
+                        </script>
+                        <%- include("../templates/footer.ejs") %>
+
+        </main>
+</body>
+
+
+</html>

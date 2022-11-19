@@ -1,0 +1,84 @@
+<strong class="text-center text-pink-900 text-5xl lg:px-5 shadow-lg shadow-gray-500 rounded-lg p-3">Colerful Hats</strong>
+<div class="flex flex-col lg:flex-row justify-around w-full items-center flex-wrap transform">
+    <div>
+        <div class="flex flex-col m-5 rounded-md overflow-hidden bg-pink-400 text-white">
+            <div class=" flex-1 max-w-xs overflow-hidden max-h-52">
+                <image class="w-fit h-fit" src="/images/demo/demo.jpg" alt="img">
+            </div>
+            <p class="text-lg break-words py-1 px-2 max-w-xs">
+                This is the default hat comes with hall charges.
+            </p>
+            <div class="flex justify-between p-2">
+                <strong class="bg-green-700 text-white px-1 rounded-md">
+                    4.6 ★
+                </strong>
+                <p class="text-sm">
+                    Default Charges
+                </p>
+            </div>
+        </div>
+    </div>
+    <div>
+
+        <% for(let i=0 ; i< hats.length ; i++){ %>
+            <div id="<%= hats[i].id  %>"
+                class="hats flex items-center m-5 overflow-hidden p-2 rounded-lg <%= hats[i].status == false ?'opacity-50 pointer-events-none':'' %>">
+                <div class="flex-1 items-center w-48 overflow-hidden rounded-lg ">
+                    <image class="transform transition duration-100 scale-105 hover:scale-100"
+                        src="<%= hats[i].image %>" alt="img">
+                </div>
+                <div class="flex-auto flex flex-col lg:flex-row justify-start items-start px-5 lg:p-2 overflow-hidden">
+                    <p class="text-lg px-5 py-2 max-w-xs lg:w-40 break-words">
+                        <%= hats[i].name %> 
+                    </p>
+                    <div class="flex flex-col justify-start h-full px-5 py-2">
+                        <p class="text-sm pb-5">
+                            Halls Charge+ ₹<strong>
+                                <%= hats[i].price %>
+                            </strong>
+                        </p>
+                        <strong class="bg-green-700 text-white px-1 rounded-md text-center h-fit w-fit">
+                            <%= hats[i].rating %> ★
+                        </strong>
+                    </div>
+                    <p class="break-words px-5 py-2 max-h-xs max-w-xs">
+                        <%= hats[i].discription %>
+                    </p>
+                    <div class="py-2 px-5">
+                        <button id="<%= hats[i].id  %>" <%=hats[i].status==true ? '' : 'disabled' %>
+                            onclick="setHatId(this)"
+                            class="flex rounded-md p-1 w-20 text-white <%=hats[i].status==true ? 'bg-pink-600'
+                                : 'bg-gray-500' %> h-fit">
+                                <% if(hats[i].status==true){ %>
+                                    <b class="px-1">ADD</b>
+                                    <b class="border-l-2 border-gray-200 flex justify-center items-center px-1">+</b>
+                                    <% }else{ %>
+                                        <b class="px-1">Empty</b>
+                                        <% } %>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </div>
+
+</div>
+
+
+<script>
+    function setHatId(e) {
+        let id = e.id;
+        //removing borders
+        let allHats = document.getElementsByClassName("hats");
+        for (let i = 0; i < allHats.length; i++) {
+            allHats[i].style.background = "none";
+        }
+
+        document.getElementById(id).style.background = "gray";
+
+        localStorage.setItem("hat", JSON.stringify(id));
+
+    }
+
+
+</script>
