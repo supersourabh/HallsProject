@@ -31,7 +31,7 @@ user.post("/login?", async (req, res) => {
     try {
         let db = req.db
         if (req.body.mobile && req.body.password) {
-            db.query(`select id , first_name ,password, last_name , profile, mobile from bdhalls.users where mobile = ${req.body.mobile};`, (err, result) => {
+            db.query(`select id , first_name ,password, last_name , profile, mobile,email from bdhalls.users where mobile = ${req.body.mobile};`, (err, result) => {
                 if (err) res.render("html/error", { error: err.message, status: err.errno })
                 else if (result.length == 0) {
                     res.redirect("/user/signup")
@@ -40,10 +40,11 @@ user.post("/login?", async (req, res) => {
                     let user = result[0]
                     if (user && bcrypt.compareSync(req.body.password, user.password)) {
                         //redirecting to /
-                        //var token = genToken({ id: user.id, mobile: user.mobile })
-                        //user['token'] = token;
+                        var token = genToken(user)
+                        req.session.user = token;
+
                         delete user['password']
-                       // req.session.user = user;
+
                         res.render("html/redirect", { url: process.env.DOMAIN_URL, data: user })
                         //res.redirect(url + "?pids=" + req.query.data)
 

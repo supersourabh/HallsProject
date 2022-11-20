@@ -164,11 +164,12 @@
                         </b>
                     </li>
                 </ul>
-                <form id="genForm" action="/payment/generate?pids=<%= cakeId+','+hatId+','+propzId %>" method="post" c>
-                    <input type="submit"
-                        class=" border-2 border-green-400 text-white bg-green-400 rounded-md p-2 transform transition duration-150 cursor-pointer hover:bg-green-600"
-                        value="Proceed">
-                </form>
+                <a id="genForm" href="/payment/generate?pids=<%= cakeId+','+hatId+','+propzId %>">
+                    <span
+                        class=" border-2 border-green-400 text-white bg-green-400 rounded-md p-2 transform transition duration-150 cursor-pointer hover:bg-green-600">
+                        Proceed
+                    </span>
+                </a>
             </div>
             </div>
         </main>

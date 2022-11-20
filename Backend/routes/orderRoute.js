@@ -1,9 +1,10 @@
 const express = require("express")
+const sessionCheck = require("../utils/sessionCheck")
 
 const order = express.Router()
 
 
-order.get("/orderDetails?", async (req, res) => {
+order.get("/orderDetails?", sessionCheck, async (req, res) => {
     try {
         let db = req.db
         const oId = req.query.orderId

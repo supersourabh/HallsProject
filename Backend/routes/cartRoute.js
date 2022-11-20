@@ -1,11 +1,12 @@
 const { json } = require("body-parser");
-const express = require("express")
+const express = require("express");
+const sessionCheck = require("../utils/sessionCheck");
 
 const cart = express.Router()
 
 
 
-cart.get("/", (req, res) => {
+cart.get("/", sessionCheck, (req, res) => {
     try {
 
         const cakeId = req.query.cake;

@@ -31,9 +31,9 @@
                         <script>
 
                             function removeLC() {
-                                localStorage.clear("cake");
-                                localStorage.clear("hat");
-                                localStorage.clear("propz");
+                                localStorage.removeItem("cake");
+                                localStorage.removeItem("hat");
+                                localStorage.removeItem("propz");
                             }
 
                             document.getElementById("go").onclick = () => {

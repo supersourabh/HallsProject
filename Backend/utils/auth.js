@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken")
+
 function genToken(data) {
     return jwt.sign(data, process.env.JWT_SECRET, { algorithm: "HS384", expiresIn: '24h' });
 }

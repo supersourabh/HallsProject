@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="refresh" content="1; url = <%= url %>" />
+    <!-- <meta http-equiv="refresh" content="1; url = <%= url %>" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <style>
@@ -23,8 +23,11 @@
         Redirecting to <%= url %>
     </div>
     <script>
-        let data = '<%- JSON.stringify(data) %>'
+        let data = JSON.parse('<%- JSON.stringify(data) %>')
         localStorage.setItem("halls-user", JSON.stringify(data));
+        setTimeout(function () {
+            location.href = "/";
+        }, 1000)
     </script>
 </body>
 

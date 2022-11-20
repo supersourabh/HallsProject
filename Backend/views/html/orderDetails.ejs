@@ -55,11 +55,11 @@
                         </li>
                         <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">
                             <div class="w-1/2 font-bold">
-                                Date of Order
+                                Attending on
                             </div>
                             <div class="w-1/2 ">
-                                <%= order.date.toISOString().split("T")[0] %>,<%=
-                                        order.date.toISOString().split("T")[1].slice(0,8) %>
+                                <%= order.attend_date.toString().split("00:00:00")[0] %>
+                                       
                             </div>
                         </li>
                         <li class="flex bg-pink-200 p-5 px-2 m-1 rounded-lg">

@@ -3,7 +3,8 @@ const payment = express.Router();
 const Razorpay = require('razorpay')
 const crypto = require("crypto")
 require('dotenv').config()
-const formatDate = require("date-and-time")
+const formatDate = require("date-and-time");
+const sessionCheck = require("../utils/sessionCheck");
 const now = new Date();
 const dateAndTime = formatDate.format(now, 'YYYY/MM/DD HH:mm:ss');
 const date = formatDate.format(now, 'YYYY/MM/DD');
@@ -57,7 +58,7 @@ var rzpInstance = new Razorpay({
 });
 
 
-payment.post("/generate?", async (req, res) => {
+payment.get("/generate?", sessionCheck, async (req, res) => {
     try {
         let uid = req.query.uid
         let itemsIds = req.query.pids;
@@ -69,7 +70,7 @@ payment.post("/generate?", async (req, res) => {
         req.db.query(query, (err, result) => {
             if (err) res.render("html/error", { error: err.message, status: err.errno })
             else {
-                let service_cost = parseFloat(process.env.SERVICE_COST);
+                let service_cost = parseFloat();
                 let tax = parseFloat((service_cost * parseFloat(process.env.TAX)) / 100);
                 const [cake, hat, propz] = result;
 
@@ -82,7 +83,7 @@ payment.post("/generate?", async (req, res) => {
                 let options = {
                     amount: Math.round(total) * 100,
                     currency: "INR",
-                    receipt: "name on the receipt"
+                    receipt: uid
                 }
                 rzpInstance.orders.create(options, (err, order) => {
                     if (err) {
@@ -177,9 +178,23 @@ payment.get('/address/date?', (req, res) => {
 })
 
 
+payment.get('/address/slot', (req, res) => {
+
+    try {
+        if (req.session.user && req.cookies.halls_user_auth) {
+            res.status(200).send({ status: 200, message: "ok" })
+        } else {
+            res.send({ status: 404, message: "Session expired (Unauthorized)" })
+        }
+    } catch (error) {
+        res.send({ error: error.message, status: error.status })
+    }
+})
+
+
 payment.post("/verify/signiture", async (req, res) => {
     try {
-        let userId = "c3ee7af2-6138-49a7-b462-d5e0b228ae52";
+        let userId = req.body.address.userId;
         let outletId = req.body.address.place.split(" ")[1]
         let slot = req.body.address.slot
         let slotDate = req.body.address.date
@@ -188,40 +203,45 @@ payment.post("/verify/signiture", async (req, res) => {
         let rzpOrder = req.body.response.razorpay_order_id;
 
         let db = req.db
+        if (req.session.user && req.cookies.halls_user_auth) {
+            //razorpay payment
+            let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
 
-        //razorpay payment
-        let body = req.body.response.razorpay_order_id + "|" + req.body.response.razorpay_payment_id;
-
-        var expectedSignature = crypto.createHmac('sha256', process.env.RZP_KEY_SECRET)
-            .update(body.toString())
-            .digest('hex');
-
-
-        if (expectedSignature === req.body.response.razorpay_signature && slots.includes(req.body.address.slot)) {
-
-            let oId = crypto.randomUUID()
-
-            let rzpOrderDetails = await rzpInstance.orders.fetchPayments(req.body.response.razorpay_order_id)
-            // res.send(rzpOrderDetails)
-
-            //slot update
+            var expectedSignature = crypto.createHmac('sha256', process.env.RZP_KEY_SECRET)
+                .update(body.toString())
+                .digest('hex');
 
 
-            db.query(`insert into bdhalls.order values('${oId}', '${userId}' , '${outletId.toString()}','${slot}',${rzpOrderDetails.items[0].amount / 100},'${rzpPayment}' , '${rzpOrder}' , '${productsRaw}' , 'Pending','${dateAndTime}','${dateAndTime}' )`, (err, result) => {
-                if (err) res.send({ error: err.message, status: err.errno })
-                else {
-                    let slotId = crypto.randomUUID()
-                    db.query(`insert into bdhalls.slots values('${slotId}' , '${outletId}' , '${date}','${slot}')`, (err, result) => {
-                        if (err) res.send({ error: err.message, status: err.statusCode })
-                        else {
-                            res.send({ status: 200, url: "/payment/success?orderId=" + oId })
-                        }
-                    })
-                }
-            })
+            if (expectedSignature === req.body.response.razorpay_signature && slots.includes(req.body.address.slot)) {
+
+                let oId = crypto.randomUUID()
+
+                let rzpOrderDetails = await rzpInstance.orders.fetchPayments(req.body.response.razorpay_order_id)
+                // res.send(rzpOrderDetails)
+
+                //slot update
+
+
+                db.query(`insert into bdhalls.order values('${oId}', '${userId}' , '${outletId.toString()}','${slot}',${rzpOrderDetails.items[0].amount / 100},'${rzpPayment}' , '${rzpOrder}' , '${productsRaw}' , 'Pending','${slotDate}','${dateAndTime}' )`, (err, result) => {
+                    if (err) res.send({ error: err.message, status: err.errno })
+                    else {
+                        let slotId = crypto.randomUUID()
+                        db.query(`insert into bdhalls.slots values('${slotId}' , '${outletId}' , '${date}','${slot}')`, (err, result) => {
+                            if (err) res.send({ error: err.message, status: err.statusCode })
+                            else {
+                                console.log(result);
+                                res.send({ status: 200, url: "/payment/success?orderId=" + oId })
+                            }
+                        })
+                    }
+                })
+            } else {
+                res.status(500).send({ status: 500, url: "/error" })
+            }
         } else {
-            res.status(500).send({ status: 500, url: "/error" })
+            res.send({ status: 200, url: "/user/login" })
         }
+
 
 
     } catch (err) {

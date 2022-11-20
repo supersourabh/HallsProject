@@ -33,15 +33,15 @@ const db = dbConnection();
 
 app.set("db", db);
 
-var imgUrl = imageKit.url({
-    path: "/product-images/photo.jpg",
-    urlEndpoint: process.env.URL_END_PRODUCT_IMG,
-    transformation: [{
-        width: "300",
-        height: "400",
-    }],
-    signed: true
-})
+// var imgUrl = imageKit.url({
+//     path: "/product-images/photo.jpg",
+//     urlEndpoint: process.env.URL_END_PRODUCT_IMG,
+//     transformation: [{
+//         width: "300",
+//         height: "400",
+//     }],
+//     signed: true
+// })
 
 //bootstrap
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
@@ -58,20 +58,24 @@ app.use(cookieParser())
 
 app.use(
     session({
+        genid: function (req) {
+            return crypto.randomUUID();// use UUIDs for session IDs
+        },
         key: "halls_user_auth",
         secret: process.env.SITE_SECRET,
         saveUninitialized: false,
-        cookie: { maxAge: 1000 * 60 * 60 * 24 },
-        resave: false,
+        cookie: { maxAge: 3600000  },
+        resave: false
     }))
 
 
-app.use((req, res, next) => {
-    if (req.session.user && req.cookies.user_lid) {
-        res.redirect("/")
-    }
-    next();
-})
+// app.use((req, res, next) => {
+//     if (req.session.user && req.cookies.halls_user_auth) {
+//         next()
+//     } else {
+//         next();
+//     }
+// })
 
 
 app.use(flash())
@@ -91,7 +95,6 @@ app.set('views', path.join(__dirname, '/views'));
 log(app);
 
 app.get("/", (req, res) => {
-    console.log(req.session);
     res.render("html/index");
 })
 
@@ -150,14 +153,14 @@ app.get('*', function (req, res, next) {
     next(new AppError(`Page not foung for the path = ${req.path}`, 404))
 });
 
-app.use((err, req, res, next) => {
-    const status = err.status || 500;
-    res.status(status).json({
-        success: 0,
-        status: status,
-        message: err
-    })
-})
+// app.use((err, req, res, next) => {
+//     const status = err.status || 500;
+//     res.status(status).json({
+//         success: 0,
+//         status: status,
+//         message: err
+//     })
+// })
 
 app.get("/places?", (req, res) => {
     console.log("running");
