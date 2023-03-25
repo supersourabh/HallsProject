@@ -3,7 +3,7 @@ const crypto = require("node:crypto")
 const bcrypt = require("bcrypt")
 const genURL = require("../utils/imageKitURLGen")
 var jwt = require('jsonwebtoken');
-const { genToken } = require("../utils/auth");
+const { genToken , decodeToken } = require("../utils/auth");
 const sessionCheck = require("../utils/sessionCheck.js");
 
 
@@ -21,9 +21,8 @@ user.get("/user", (req, res) => {
     //res.render('html/products');
 })
 
-user.get("/login", async (req, res) => {
-
-    res.render('html/login', { redirectUrl: false });
+user.get("/login?", async (req, res) => {
+    res.render('html/login', { redirectUrl: req.query.path ?? null });
 
 })
 
@@ -31,7 +30,7 @@ user.post("/login?", async (req, res) => {
     try {
         let db = req.db
         if (req.body.mobile && req.body.password) {
-            db.query(`select id , first_name ,password, last_name , profile, mobile,email from bdhalls.users where mobile = ${req.body.mobile};`, (err, result) => {
+            db.query(`select id , first_name ,password, last_name , profile, mobile,email,admin from bdhalls.users where mobile = ${req.body.mobile};`, (err, result) => {
                 if (err) res.render("html/error", { error: err.message, status: err.errno })
                 else if (result.length == 0) {
                     res.redirect("/user/signup")
@@ -42,10 +41,9 @@ user.post("/login?", async (req, res) => {
                         //redirecting to /
                         var token = genToken(user)
                         req.session.user = token;
-
                         delete user['password']
+                        res.render("html/redirect", { data: user, redirectUrl: req.query.redirectUrl ?? '/' })
 
-                        res.render("html/redirect", { url: process.env.DOMAIN_URL, data: user })
                         //res.redirect(url + "?pids=" + req.query.data)
 
                     } else {
@@ -100,7 +98,7 @@ user.post("/signup", async (req, res) => {
                                 }
                             ] //required
                         }, (error, result) => {
-                            if (error) res.send("error" + error)
+                            if (error) res.send("error : " + error)
                             else {
                                 let reslt = result
                                 let url = reslt.url
@@ -115,10 +113,10 @@ user.post("/signup", async (req, res) => {
                 })
             } else {
                 body["profile"] = ""
-                db.query(`insert into bdhalls.users set ?`, req.body, (err, result) => {
+                db.query(`insert into bdhalls.users set ?`, body, (err, result) => {
                     if (err) {
-                        if (err.errno == 1062) res.render("html/error", { error: "Mandatory Fields already exists", status: err.errno })
-                        else res.render("html/error", { error: err.message, status: err.errno })
+                        if (err.errno == 1062) res.render("html/error", { error: "Mandatory Fields(mobile or email) already exists", status: err.errno })
+                        else res.render("html/error", { error: err.sqlMessage, status: err.errno })
                     }
                     else {
                         res.redirect("/user/login")
@@ -139,7 +137,6 @@ user.post("/signup", async (req, res) => {
 user.get("/profile?", (req, res) => {
     try {
         let id = req.query.id
-        console.log(id);
         req.db.query(`select * from bdhalls.users where id=?`, id, (err, user) => {
             if (err) res.render("html/error", { error: err.message, status: err.errno })
             else {

@@ -1,43 +1,51 @@
 const express = require("express")
+const { decodeToken } = require("../utils/auth")
 const sessionCheck = require("../utils/sessionCheck")
 
 const order = express.Router()
 
 
-order.get("/orderDetails?", sessionCheck, async (req, res) => {
+order.get("/orderDetails?", sessionCheck, async (req, res, next) => {
     try {
         let db = req.db
         const oId = req.query.orderId
-        db.query(`select * from bdhalls.order where id = '${oId}'`, (err, result) => {
-            if (err) res.render("html/error", { error: err.message, status: err.errno })
-            else {
-                let order = result[0]
-                if (result.length == 0) res.render("html/error", { error: "order not found", status: 404 })
+        const user = decodeToken(req.session.user)
+        db.query(`select o.id, o.outletId, s.date as attend_date , s.slottime , o.price, o.status , o.rzpPaymentId, o.rzpOrderId, o.selectedProductsIds ,concat(u.first_name ,' ', u.last_name)as username, o.userId
+        from bdhalls.order o inner join bdhalls.slots s on o.id = s.orderId 
+        inner join bdhalls.users u on o.userId = u.id where o.id = ? and (o.userId = ? or ? );`, [oId, user.id, user.admin],
+            (err, result) => {
+                if (err) res.render("html/error", { error: err.message, status: err.errno })
                 else {
-
-                    let productIds = order.productsId.split("+");
-                    let error = ""
-                    db.query(`select image, name, price from bdhalls.product where id in (?);`, [productIds], (err, products) => {
-                        if (err) {
-                            error = err.message;
-                        }
-                        else {
-                            let itemTotal = 0;
-                            for (let i = 0; i < products.length; i++) itemTotal += products[i].price;
-                            //res.send({ order, products, itemTotal })
-                            res.render("html/orderDetails", { order: order, products: products, itemTotal: itemTotal })
-                        }
-                    })
+                    let order = result[0]
+                    if (order) {
+                        let productIdsWithCategory = order ? order.selectedProductsIds.split(",") : null;
+                        let productIds = []
+                        productIdsWithCategory.forEach(e => {
+                            let idTemp = e.split('_')[1]
+                            productIds.push(idTemp)
+                        });
+                        let error = ""
+                        db.query(`select image, name, price from bdhalls.product where id in (?);`, [productIds], (err, products) => {
+                            if (err) {
+                                error = err.message;
+                            }
+                            else {
+                                let itemTotal = 0;
+                                for (let i = 0; i < products.length; i++) itemTotal += products[i].price;
+                                //res.send({ order, products, itemTotal })
+                                res.render("html/orderDetails", { order: order, products: products, itemTotal: itemTotal })
+                            }
+                        })
+                    } else {
+                        res.render("html/error", { error: 'Order not found', status: 404 })
+                    }
                 }
 
-                //res.render("html/orderDetails", { order: order ,})
-            }
-
-        })
+            })
 
 
     } catch (error) {
-        return next(e)
+        res.render("html/error", { error: error.message, status: 500 })
     }
 })
 

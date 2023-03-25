@@ -1,0 +1,108 @@
+<%- include("../../templates/head.ejs" , {title: 'Admin-Edit' }) %>
+
+
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+        <%- include("../../templates/header.ejs") %>
+
+            <main class="relative flex flex-col">
+                <div class="absolute text-center w-full flex items-center justify-center">
+                    <div id="status" class="max-w-sm px-5 py-3 rounded"></div>
+                </div>
+                <%if(editItemType=="OUTLET" ){%>
+                    <div id="addDiv" class="flex flex-col items-center justify-center w-full h-auto">
+                        <div class="bg-gray-500 flex flex-col w-full lg:w-1/3  px-10 py-5 h-full">
+                            <div class="text-white  font-bold text-xl w-full text-center py-3">Add/Edit Outlet</div>
+                            <div>
+                                <label class="text-gray-700" for="id"> Outlet Id</label>
+                                <input type="text" id="id" disabled class="w-full p-3 my-2" name="id"
+                                    value="<%= outlet.id %>">
+                            </div>
+                            <div>
+                                <label class="text-gray-700" for="outlet_admin_mobile">Enter Admin Mobile</label>
+                                <div class="text-xs text-yellow-500">(if you want to change mobile update in your
+                                    profile please)</div>
+                                <input type="text" id="outlet_admin_mobile" name="outlet_admin_mobile"
+                                    class="w-full p-3 my-2" disabled value="<%=outlet.mobile%>">
+                            </div>
+                            <div>
+                                <label class="text-white" for="name">Enter Outlet Name</label>
+                                <input type="text" id="name" class="w-full p-3 my-2" name="name"
+                                    placeholder="Outlet Name here" value="<%= outlet.name %>">
+                            </div>
+                            <div>
+                                <label class="text-white" for="service_cost">Enter Service_cost </label>
+                                <input type="number" id="service_cost" class="w-full p-3 my-2" name="service_cost"
+                                    placeholder="Outlet service_cost here" value="<%= outlet.outlet_service_cost %>">
+                            </div>
+                            <div>
+                                <label class="text-white" for="active">Select Active Status</label>
+                                <select name="active" id="active" class="w-full p-3 my-2" >
+                                    <option <%= outlet.isActive? 'selected' : ' ' %>  value="1">TRUE</option>
+                                    <option <%= outlet.isActive? ' ' : 'selected' %> value="0">FALSE</option>
+                                </select>
+                            </div>
+                            
+
+                            <label class="text-white" for="image">Select Image </label>
+                            <input type="file" name="image" id="image"
+                                class="w-full p-3 my-2 text-white placeholder:text-white" placeholder="Image here"
+                                value="">
+
+                            <button class="bg-gray-300 rounded-lg px-3 py-2 w-fit " onclick="editOutlet()">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    <%}else{%>
+                        it is product
+                        <%}%>
+
+            </main>
+            <%- include("../../templates/footer.ejs") %>
+
+                <script>
+                    const uId = JSON.parse(localStorage.getItem('halls-user')).id
+
+                    async function editOutlet() {
+
+                        let id = document.querySelector("#id").value
+                        let name = document.querySelector("#name").value
+                        let mobile = document.querySelector("#outlet_admin_mobile").value
+                        let service_cost = document.querySelector("#service_cost").value
+                        let active = document.querySelector("#active").value
+
+                        let conform = confirm("want to submit?")
+                        console.log(conform);
+                        if (id == '<%= outlet.id %>' && name == '<%= outlet.name %>' && mobile == '<%= outlet.mobile %>' && !conform) {
+                            alert("edit something or close the tab")
+                        } else {
+                            let data = { Id: id, name: name, admin_mobile: mobile, outlet_service_cost: service_cost, isActive: active }
+                            let res = await fetch("/admin/outlets/" + id + "/edit/" + uId,
+                                {
+                                    headers: { 'content-type': 'application/json' },
+                                    method: "PUT",
+                                    body: JSON.stringify(data)
+                                }
+                            ).then((r) => r.json())
+                            let statusDiv = document.querySelector("#status")
+                            if (res.status == 200) {
+                                statusDiv.innerHTML = "Outlet edited successfully"
+                                statusDiv.style.background = "green"
+                                setTimeout(() => {
+                                    window.close()
+                                }, [5000])
+                            } else {
+                                statusDiv.innerHTML = "Error :" + res.error
+                                statusDiv.style.background = "red"
+                            }
+                            setTimeout(() => {
+                                statusDiv.innerHTML = ""
+                                statusDiv.style.background = "transparent"
+                            }, [5000])
+                        }
+                    }
+                </script>
+
+    </body>
+
+    </html>

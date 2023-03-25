@@ -18,9 +18,13 @@ const crypto = require("crypto");
 const AppError = require("./utils/appError");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const admin = require("./routes/adminRoute");
+const favicon = require("serve-favicon");
+const addressApis = require("./routes/addressApisRoute");
 require("dotenv").config()
 
 const app = express();
+
 
 
 var imageKit = new ImageKit({
@@ -51,8 +55,8 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 const PORT = process.env.PORT || 5000;
 
-
 app.use(bodyParser({ extended: true }))
+app.use(express.json())
 
 app.use(cookieParser())
 
@@ -64,19 +68,9 @@ app.use(
         key: "halls_user_auth",
         secret: process.env.SITE_SECRET,
         saveUninitialized: false,
-        cookie: { maxAge: 3600000  },
+        cookie: { maxAge: 3600000 },
         resave: false
     }))
-
-
-// app.use((req, res, next) => {
-//     if (req.session.user && req.cookies.halls_user_auth) {
-//         next()
-//     } else {
-//         next();
-//     }
-// })
-
 
 app.use(flash())
 
@@ -86,6 +80,9 @@ app.use(fileUpload({
 }));
 
 app.use(express.static(path.join(__dirname, "/views/public")))
+
+app.use(favicon(path.join(__dirname, 'views/public/brand', 'c.ico')))
+//app.get('/favicon.ico', (req, res) => res.sendFile('./views/public/brand/c.png'));
 
 //ejs part 
 app.set("view engine", "ejs")
@@ -143,6 +140,21 @@ app.use("/payment", (req, res, next) => {
     req.db = db;
     next();
 }, payment)
+
+//addressDataApi
+app.use("/addressData", (req, res, next) => {
+    req.db = db;
+    req.imageKit = imageKit;
+    next();
+}, addressApis)
+
+
+//admin
+app.use("/admin", (req, res, next) => {
+    req.db = db;
+    req.imageKit = imageKit;
+    next();
+}, admin)
 
 //error
 app.get('/error', (req, res) => {

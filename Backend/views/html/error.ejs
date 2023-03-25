@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/output.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <title>
-        Error | CakeHalls.in
-    </title>
-</head>
-
-<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
-
-    <%- include("../templates/header.ejs") %>
-
-        <main class="flex flex-col">
-            <div>
-                <%= error  %> 
-                <%= status %> 
-            </div>
-        </main>
-        <%- include("../templates/footer.ejs") %>
+<%- include("../templates/head.ejs" , {title: 'Error' }) %>
 
 
-</body>
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+
+        <%- include("../templates/header.ejs") %>
+
+            <main class="flex flex-col">
+                <div class="flex justify-center items-center h-screen">
+                    <div class="flex flex-col border-2 border-gray-500 rounded">
+                        <div class="flex flex-col justify-center items-center font-bold text-red-700 overflow-hidden p-2">
+                            <span
+                                class="text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-gray-500 font-mono">
+                                <%= status %>
+                            </span>
+                        </div>
+                        <div class="font-bold text-red-700 border-t-2 border-gray-500 p-3 max-w-sm break-words">
+                            Error:
+                            <span class="font-normal">
+                                <%= error %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <%- include("../templates/footer.ejs") %>
+
+
+    </body>
 
 </html>

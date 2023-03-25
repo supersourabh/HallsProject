@@ -10,6 +10,7 @@
     "bootstrap": "^5.2.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.6",
+    "countrycitystatejson": "^21.2.2301",
     "date-and-time": "^2.4.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
@@ -25,6 +26,7 @@
     "postcss": "^8.4.16",
     "postcss-cli": "^10.0.0",
     "razorpay": "^2.8.3",
+    "serve-favicon": "^2.5.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

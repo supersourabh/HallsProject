@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("../../templates/head.ejs" , {title: 'Dashboard'}) %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+
+    <%- include("../../templates/header.ejs") %>
+
+        <main class="flex flex-col lg:flex-row lg:p-5 py-5 w-full">
+            <section class="w-full lg:w-1/5 px-5 py-5 border-r-2 border-pink-500">
+                <%- include("../../templates/dashboardSidebar.ejs" ,{selected : 'dashboard' }) %>
+            </section>
+            <section class="flex flex-wrap w-full px-5 pt-8">
+                <div class="w-full lg:w-1/2 border-2 border-pink-700 px-10 py-3">
+                    <h1 class="text-3xl font-bold text-pink-800">Users Data</h1>
+                    <canvas id="users" class="w-full lg:w-1/2" style="width:100%;max-width:700px"></canvas>
+                </div>
+                <div class="w-full lg:w-1/2 border-2 border-pink-700 px-10 py-3">
+                    <h1 class="text-3xl font-bold text-pink-800">Orders Data</h1>
+                    <canvas id="orders" class="w-full lg:w-1/2" style="width:100%;max-width:700px"></canvas>
+                </div>
+                <div class="w-full lg:w-1/2 border-2 border-pink-700 px-10 py-3">
+                    <h1 class="text-3xl font-bold text-pink-800">Products Data</h1>
+                    <canvas id="products" class="w-full lg:w-1/2" style="width:100%;max-width:700px"></canvas>
+                </div>
+                <div class="w-full lg:w-1/2 border-2 border-pink-700 px-10 py-3">
+                    <h1 class="text-3xl font-bold text-pink-800">Outlets Data</h1>
+                    <canvas id="outlets" class="w-full lg:w-1/2" style="width:100%;max-width:700px"></canvas>
+                </div>
+
+        </main>
+        <%- include("../../templates/footer.ejs") %>
+            <!-- script for order chart -->
+
+            <script>
+                var xValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+
+                new Chart("users", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: "rgba(0,0,255,1.0)",
+                            borderColor: "rgba(0,0,255,0.1)",
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        legend: { display: false },
+                        scales: {
+                            yAxes: [{ ticks: { min: 6, max: 16 } }],
+                        },
+                        title: {
+                            display: true,
+                            text: "Number of User Registered(Month wise)"
+                        }
+                    }
+                });
+            </script>
+            <!-- script for pie chart -->
+
+            <script>
+                var xValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+                var yValues = [10, 20, 40, 60, 80, 10, 20, 40, 60, 80, 40, 20];
+                var borderColors = [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 199, 132)',
+                    'rgb(255, 199, 64)',
+                    'rgb(255, 105, 86)',
+                    'rgb(75, 133, 192)',
+                    'rgb(54, 225, 235)',
+                    'rgb(255, 199, 132)'
+                ]
+                var barColors = [
+                    'rgb(255, 99, 132 , 0.5)',
+                    'rgb(255, 159, 64 , 0.5)',
+                    'rgb(255, 205, 86 , 0.5)',
+                    'rgb(75, 192, 192 , 0.5)',
+                    'rgb(54, 162, 235 , 0.5)',
+                    'rgb(255, 199, 132 , 0.5)',
+                    'rgb(255, 199, 64 , 0.5)',
+                    'rgb(255, 105, 86 , 0.5)',
+                    'rgb(75, 133, 192 , 0.5)',
+                    'rgb(54, 225, 235 , 0.5)',
+                    'rgb(255, 199, 132 , 0.5)'
+                ]
+
+                new Chart("orders", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            backgroundColor: barColors,
+                            data: yValues,
+                            borderColors: borderColors,
+                            borderWidth: 1,
+                            barThickness: 25,
+                            min: 0
+                        }],
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{ ticks: { min: 0 } }],
+                        },
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "Number of Orders Received(Month wise)"
+                        },
+
+                    }
+                });
+            </script>
+
+            <script>
+                var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+                var yValues = [55, 49, 44, 24, 15];
+                var barColors = [
+                    "#b91d47",
+                    "#00aba9",
+                    "#2b5797",
+                    "#e8c3b9",
+                    "#1e7145"
+                ];
+
+                const data = {
+                    labels: [
+                        'Cakes',
+                        'Hats',
+                        'Propz'
+                    ],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [40, 80, 60],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(75, 192, 192)',
+                            'rgb(255, 205, 86)',
+                        ]
+                    }]
+                };
+                new Chart("products", {
+                    type: "polarArea",
+                    data: data,
+                    options: {
+                        title: {
+                            display: true,
+                            text: "Products Consumed in the Current Year"
+                        }
+                    }
+                });
+            </script>
+
+            <!-- otlets data chart script -->
+
+            <script>
+                var xValues = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
+                var yValues = [1, 5];
+
+                new Chart("outlets", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            fill: false,
+                            lineTension: 0,
+                            backgroundColor: "rgba(200,55,255,1.0)",
+                            borderColor: "rgba(200,55,255,0.3)",
+                            data: yValues
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: "Increase in the Number of Outlets(year wise)"
+                        },
+                        legend: { display: false },
+                        scales: {
+                            yAxes: [{ ticks: { min: 0, max: 10 } }],
+                        }
+                    }
+                });
+            </script>
+
+
+
+
+</body>
+
+</html>
