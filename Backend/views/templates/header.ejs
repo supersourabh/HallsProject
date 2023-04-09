@@ -5,43 +5,12 @@
         z-index: 100;
     }
 </style>
-<div class="relative z-100" style="z-index: 100;">
-    <div class="absolute -left-40 top-0 backdrop-blur-md py-10 px-10 max-w-sm" id="side">
-
-        <button class=" absolute top-0 right-0 p-2" onclick="headerSideToggle()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="feather feather-x">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-
-        <ul class="text-black ">
-            <li>
-                <a id="headerDashboard" href="/admin/dashboard">Dashboard</a>
-
-            </li>
-            <li>Hello world</li>
-            <li>Hello world</li>
-            <li>Hello world</li>
-            <li>Hello world</li>
-        </ul>
-
-    </div>
-</div>
-<script>
-    function headerSideToggle() {
-        let side = document.getElementById('side')
-        side.classList.toggle('active')
-        side.style.transition = 'left 0.5s'
-
-    }
-</script>
 
 
 <header
-    class="z-50 flex flex-col lg:flex-row backdrop-blur-md shadow-lg border-b-2 text-white justify-between align-middle top-0 sticky">
+    class="relative z-50 flex flex-col lg:flex-row backdrop-blur-md shadow-lg border-b-2 text-white justify-between align-middle top-0 sticky">
+    
+   <%- include("../templates/homePageSide.ejs") %>
 
     <ul class="flex-1 flex justify-center items-center m-2 lg:px-10">
         <li class="flex-none flex flex-col justify-start">

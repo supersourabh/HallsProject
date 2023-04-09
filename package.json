@@ -1,8 +1,8 @@
 {
-  "name": "pickmycode",
+  "name": "My_Project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This is a major project with full functions of Orderning, Payment and Seller/Admin Dashboards",
+  "main": "Backend/server.js",
   "dependencies": {
     "autoprefixer": "^10.4.11",
     "bcrypt": "^5.1.0",
@@ -26,8 +26,7 @@
     "postcss": "^8.4.16",
     "postcss-cli": "^10.0.0",
     "razorpay": "^2.8.3",
-    "serve-favicon": "^2.5.0",
-    "uuid": "^9.0.0"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.1.8"
@@ -36,6 +35,6 @@
     "build": "postcss ./backend/views/css/tailwind.css -o ./backend/views/css/output.css",
     "start": "nodemon backend/server.js --watch backend/**/**/**/*"
   },
-  "author": "",
+  "author": "Sourabh Kotagi",
   "license": "ISC"
 }

@@ -68,12 +68,16 @@
                             </div>
 
                             <div class="text-white  font-bold text-xl w-full text-center py-3">Filter</div>
-                            <label class="text-white" for="id">Enter Order Id (optional)</label>
-                            <input type="text" id="orderId" class="w-full p-3 my-2" placeholder="Order ID here"
+                            <label class="text-white" for="id">Enter Pincode</label>
+                            <input type="text" id="orderId" class="w-full p-3 my-2" placeholder="Pincode here"
                                 value="">
 
-                            <label class="text-white" for="outletId">Enter Outlet Name</label>
+                            <label class="text-white" for="outletId">Enter Outlet Id</label>
                             <input type="text" id="outletId" class="w-full p-3 my-2" placeholder="Outlet ID here"
+                                value="">
+
+                            <label class="text-white" for="outletName">Enter Outlet Name</label>
+                            <input type="text" id="outletName" class="w-full p-3 my-2" placeholder="Outlet Name here"
                                 value="">
 
                             <label class="text-white" for="status">Select Status</label>
@@ -81,11 +85,11 @@
                                 <option value="" selected class="bg-gray-300">
                                     Not selected
                                 </option>
-                                <option value="Pending" class="bg-gray-300">
-                                    Pending(use for not attended too)
+                                <option value="true" class="bg-gray-300">
+                                    Active
                                 </option>
-                                <option value="Attended" class="bg-gray-300">
-                                    Attended
+                                <option value="false" class="bg-gray-300">
+                                    Inactive
                                 </option>
 
                             </select>
@@ -98,18 +102,20 @@
                                 let button = document.getElementById('FilterButton')
                                 let id = JSON.parse(localStorage.getItem('halls-user')).id
                                 button.addEventListener('click', async (e) => {
-                                    let orderId = document.getElementById('orderId').value
+                                    let pincode = document.getElementById('pincode').value
                                     let outletId = document.getElementById('outletId').value
+                                    let outletName = document.getElementById('outletName').value
                                     let status = document.getElementById('status').value
 
                                     //sortAnchor.href = `/admin/products?id=${id}&ctg=all`
                                     let other = ''
 
-                                    if (orderId) other += '&orderId=' + orderId
+                                    if (orderId) other += '&pincode=' + pincode
                                     if (outletId) other += '&outletId=' + outletId
+                                    if (outletId) other += '&outletName=' + outletName
                                     if (status) other += '&status=' + status
 
-                                    window.location.href = `/admin/orders?id=${id}${other}`
+                                    window.location.href = `/admin/outlets?id=${id}${other}`
 
                                     filterButton()
 

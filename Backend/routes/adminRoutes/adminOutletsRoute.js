@@ -6,36 +6,49 @@ const adminOutlets = require('express').Router()
 
 adminOutlets.get("/", (req, res) => {
     try {
-        let access = false;
+        console.log(Object.keys(req.query).length);
+        filter = undefined;
+        if (Object.keys(req.query).length > 1) {
+            filter = " ";
+            let pincode = req.query.pincode;
+            let outletId = req.query.outletId;
+            let outletName = req.query.outletName;
+            let status = req.query.status;
+
+            if (status) filter += `o.isActive= '${status}'`;
+            if (pincode) filter += `a.pincode='${pincode}'`;
+            if (outletId) filter += `o.id= '${outletId}'`;
+            if (outletName) filter += `o.name= '${outletName}'`;
+        }
+
         let quey = `
-        select admin from bdhalls.users where id= ?;
+            select admin from bdhalls.users where id= ?;
             select o.id , o.name , concat(u.first_name, ' ', u.last_name,'(',u.mobile,')' ) as admin,
             a.pincode as pincode , o.outlet_service_cost as service_cost, o.isActive as status , o.date , ord.orders_count
             from bdhalls.outlets as o
             inner join bdhalls.users u on o.outlet_admin = u.id
             inner join bdhalls.addressData a on a.id = o.addressId 
             left join (select outletId , count(*) as orders_count from bdhalls.order group by outletId) ord on ord.outletId = o.id
-            order by date desc;
+            ${filter != undefined ? 'where ?' : ''}
+            order by date desc; 
             select state from bdhalls.addressData group by state order by state ;
             select city from bdhalls.addressData group by city order by city;
             select place from bdhalls.addressData group by place order by place;
             `;
+        console.log(filter);
+        console.log(quey);
 
-
-        if (req.query.id && req.query.outletId) {
-            access = true;
-            quey += `select * from bdhalls.outlets o inner join bdhalls.addressData a on o.addressId = a.id  where o.id= '${req.query.outletId}';`;
-        }
         // if(req.query.id && req.query.outletId)  access= false;
 
         if (req.query.id) {
             let db = req.db
             db.query(
                 quey
-                , [req.query.id], (err, result) => {
+                , [req.query.id, filter], (err, result) => {
                     //result is like [ [{admin : x }] , [{outlet1},{outlet2}]  ]
+                    console.log(err);
                     if (err) res.render('html/error', { error: err.message, status: err.errno })
-                    else if (result.length > 0 && result[0][0].admin) {
+                    else if (result.length > 0 && result[0].length > 0 && result[0][0].admin) {
                         res.render("html/admin/outlets", { outlets: result[1], states: result[2], cities: result[3], places: result[4], editOutlet: result[5] ?? null })
                     } else {
                         res.render('html/error', { error: "Unauthorized", status: 404 })
