@@ -6,7 +6,6 @@ const adminOutlets = require('express').Router()
 
 adminOutlets.get("/", (req, res) => {
     try {
-        console.log(Object.keys(req.query).length);
         filter = undefined;
         if (Object.keys(req.query).length > 1) {
             filter = " ";
@@ -21,7 +20,7 @@ adminOutlets.get("/", (req, res) => {
             if (outletName) filter += `o.name= '${outletName}'`;
         }
 
-        let quey = `
+        let qry = `
             select admin from bdhalls.users where id= ?;
             select o.id , o.name , concat(u.first_name, ' ', u.last_name,'(',u.mobile,')' ) as admin,
             a.pincode as pincode , o.outlet_service_cost as service_cost, o.isActive as status , o.date , ord.orders_count
@@ -35,15 +34,13 @@ adminOutlets.get("/", (req, res) => {
             select city from bdhalls.addressData group by city order by city;
             select place from bdhalls.addressData group by place order by place;
             `;
-        console.log(filter);
-        console.log(quey);
 
         // if(req.query.id && req.query.outletId)  access= false;
 
         if (req.query.id) {
             let db = req.db
             db.query(
-                quey
+                qry
                 , [req.query.id, filter], (err, result) => {
                     //result is like [ [{admin : x }] , [{outlet1},{outlet2}]  ]
                     console.log(err);
@@ -51,7 +48,7 @@ adminOutlets.get("/", (req, res) => {
                     else if (result.length > 0 && result[0].length > 0 && result[0][0].admin) {
                         res.render("html/admin/outlets", { outlets: result[1], states: result[2], cities: result[3], places: result[4], editOutlet: result[5] ?? null })
                     } else {
-                        res.render('html/error', { error: "Unauthorized", status: 404 })
+                        res.render('html/error', { error: "Unauthorized (Please check all fields)", status: 404 })
                     }
                 })
         } else {

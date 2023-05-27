@@ -9,7 +9,7 @@ const admin = require('express').Router()
 admin.get("/dashboard", (req, res) => {
     if (req.query.id) {
         let db = req.db
-        db.query('select admin from bdhalls.users where id= ?', [req.query.id], (err, user) => {
+        db.query('select admin from bdhalls.users where id= ?', [req.query.id], (err, user) => {            
             if (err) res.render('html/error', { error: err.message, status: err.errno })
             else if (user.length > 0 && user[0].admin) {
                 res.redirect("/admin/analytics?id=" + req.query.id)
@@ -19,7 +19,7 @@ admin.get("/dashboard", (req, res) => {
         })
     }
     else {
-        res.render('/html/error', { error: 'Unauthorized', status: 404 })
+        res.render('html/error', { error: 'Unauthorized', status: 404 })
     }
 })
 admin.get("/analytics", (req, res) => {
@@ -34,7 +34,7 @@ admin.get("/analytics", (req, res) => {
             }
         })
     } else {
-        res.render('/html/error', { error: 'Unauthorized', status: 404 })
+        res.render('html/error', { error: 'Unauthorized', status: 404 })
     }
 
 })

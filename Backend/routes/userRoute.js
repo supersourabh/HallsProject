@@ -149,6 +149,14 @@ user.get("/profile?", (req, res) => {
     }
 })
 
+user.get("/logout", (req, res) => {
+    try {
+        res.render("html/logout")        
+    } catch (error) {
+        res.render("html/error", { error: error.message, status: 500 })
+    }
+})
+
 
 user.get("/?", async (req, res) => {
     try {

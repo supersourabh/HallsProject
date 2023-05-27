@@ -1,5 +1,5 @@
 {
-  "name": "My_Project",
+  "name": "Halls_Project",
   "version": "1.0.0",
   "description": "This is a major project with full functions of Orderning, Payment and Seller/Admin Dashboards",
   "main": "Backend/server.js",
