@@ -11,6 +11,10 @@ html>*{
   scrollbar-width: thin;
 }
 
+/* body{
+  background-image: url("/bg.jpg");
+} */
+
 *,
 ::before,
 ::after {

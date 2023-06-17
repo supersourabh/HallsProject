@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("../../templates/head.ejs" , {title: 'Users' }) %>
+
+
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
+
+        <%- include("../../templates/header.ejs") %>
+
+            <main class="flex flex-col lg:flex-row lg:p-5 py-5 w-full">
+                <section class="w-full lg:w-1/5 px-5 py-5 border-r-2 border-pink-500">
+                    <%- include("../../templates/dashboardSidebar.ejs" , {selected: 'users' }) %>
+                </section>
+                <section class="flex flex-col w-full px-5 pt-8 relative">
+
+                    <div id="admin" class="hidden absolute w-full justify-center py-5">
+                        <div class="w-1/2 lg:w-1/3 bg-gray-900 px-10 py-5 text-white relative">
+                            <button class="absolute right-0 mx-5" onclick="toggleAdminForm()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <ul>
+                                <li class="p-5">
+                                    <h1 class="text-white text-3xl font-bold">
+                                        Admin User
+                                    </h1>
+                                </li>
+                                <li>
+                                    <div id="status" class="px-5 py-2 rounded-lg">
+
+                                    </div>
+                                </li>
+                                <li class="flex flex-col p-5">
+                                    <label for="mobileOrEmail">
+                                        Mobile/Email of user
+                                    </label>
+                                    <input class="focus:outline-none my-2 text-black p-1" type="text" required
+                                        name="mobileOrEmail" id="mobileOrEmail" placeholder="12***789 /abc**@domain.**">
+                                </li>
+                                <li class="flex flex-col px-5 py-3">
+                                    <label for="admin">
+                                        is Admin
+                                    </label>
+                                    <select class="text-black my-2 p-1" id="isAdmin">
+                                        <option selected value="true">YES</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col px-5 py-3">
+                                    <button id="adminSubmit" onclick="addAdmin()"
+                                        class="focus:outline-none border-2 rounded-lg py-2 cursor-pointer hover:bg-gray-500">
+                                        Submit
+                                    </button>
+                                </li>
+                            </ul>
+                            <!-- <div>
+                            <button onclick="()=>window.location.reload(false)">Refresh</button>
+                        </div> -->
+                        </div>
+                    </div>
+                    <div id="searchUserDiv" class="hidden absolute w-full justify-center py-5 overflow-auto">
+                        <div class="w-1/2 mx-w-lg lg:w-1/3 bg-gray-900 px-10 py-5 text-white relative">
+                            <button class="absolute right-0 mx-5" onclick="toggleSearchForm()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                            <div id="searchForm" class="w-full">
+                                <ul>
+                                    <li class="p-5">
+                                        <h1 class="text-white text-3xl font-bold">
+                                            Search User
+                                        </h1>
+                                    </li>
+                                    <li class="flex flex-col p-5">
+                                        <label for="mobileOrEmailForSearch">
+                                            Mobile/Email of user
+                                        </label>
+                                        <input class="focus:outline-none my-2 text-black p-1" type="text" required
+                                            name="mobileOrEmailForSearch" id="mobileOrEmailForSearch" value=""
+                                            placeholder="12***789 /abc**@domain.**">
+                                    </li>
+                                    <li class="flex flex-col px-5 py-3">
+                                        <button
+                                            class="focus:outline-none border-2 rounded-lg py-2 cursor-pointer hover:bg-gray-500"
+                                            type="submit" id="searchSubmit" onclick="searchUser()">
+                                            Submit
+                                        </button>
+                                    </li>
+                                </ul>
+                                <table id="table">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Role</td>
+                                            <td>Mobile/Email</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="userData">
+
+                                    </tbody>
+
+                                </table>
+                                <style>
+                                    #table>*>*>* {
+                                        border: 2px solid white;
+                                        padding: 3px;
+                                        width: 30px;
+
+                                    }
+                                </style>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="flex text-white font-bold">
+                            <li class="flex bg-pink-500 p-2 px-3 rounded-l-lg h-fit hover:bg-pink-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-plus">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <button class="px-1 focus:outline-none" onclick="toggleAdminForm()">Admin User</button>
+                            </li>
+                            <li class="flex bg-pink-500 p-2 px-3 rounded-r-lg h-fit hover:bg-pink-400"
+                                style="margin-left: 2px ;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-search">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <button class="px-1 focus:outline-none" onclick="toggleSearchForm()">Search
+                                    User</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class='py-10 overflow-x-auto'>
+                        <% if(users){ %>
+
+                            <table class="table-auto overflow-scroll w-full">
+                                <thead class="border-b bg-pink-600">
+                                    <tr>
+                                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                            Mobile
+                                        </th>
+                                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                            Email
+                                        </th>
+                                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                            Joined
+                                        </th>
+                                       
+                                        <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                            Delete
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let i=0 ; i< users.length ; i++){ %>
+
+                                        <tr class="border-b bg-white">
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                <%= users[i].first_name %>
+                                                    <%= " " %>
+                                                        <%= users[i].last_name %>
+                                            </td>
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                <%= users[i].mobile %>
+                                            </td>
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                <%= users[i].email %>
+                                            </td>
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                <%= (users[i].date).toISOString().substring(0,20).split('T')[0] %> 
+                                                <%= " "%>
+                                                <%= (users[i].date).toISOString().substring(0,20).split('T')[1] %>
+                                                <%= "IST"%>
+                                            </td>
+                                        
+                                            <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                <button onclick="deleteUser(this)" data-id="<%= users[i].mobile %>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-trash-2">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path
+                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                        </path>
+                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    </svg>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+
+                            <%}else{%>
+                                <div class="flex items-center justify-center px-5 py-3 bg-red-500 text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-frown">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                    </svg>
+                                    <span class="px-2">
+                                        No User exits
+                                    </span>
+                                </div>
+                                <%}%>
+                    </div>
+
+                </section>
+
+            </main>
+            <%- include("../../templates/footer.ejs") %>
+    </body>
+    <script>
+
+        function toggleAdminForm(e) {
+            let admin = document.getElementById("admin");
+            admin.classList.toggle("flex");
+            admin.classList.toggle("hidden");
+        }
+
+        function toggleSearchForm(e) {
+            let search = document.getElementById("searchUserDiv");
+            search.classList.toggle("flex");
+            search.classList.toggle("hidden");
+            document.getElementById('userData').innerHTML = '';
+            document.getElementById('mobileOrEmail').value = '';
+        }
+
+        async function addAdmin(e) {
+            let mobileOrEmail = document.getElementById("mobileOrEmail").value
+            let admin = document.querySelector("#isAdmin").value
+            let data = await fetch("/admin/users/adminaction", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mobileOrEmail: mobileOrEmail, admin: admin })
+            }).then(res => res.json())
+
+            let status = document.getElementById('status')
+
+            if (data.status == 200) {
+                status.innerText = "user access changed"
+                status.style.backgroundColor = 'green'
+            } else {
+                status.innerText = "Error : " + data.error + " , Status : " + data.status
+                status.style.backgroundColor = 'red'
+            }
+
+        }
+
+        async function searchUser(e) {
+
+            let mobileOrEmail = document.getElementById("mobileOrEmailForSearch").value
+
+            let user = await fetch("/admin/users/search", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mobileOrEmail: mobileOrEmail })
+            }).then(res => res.json())
+
+            let table = document.getElementById("userData")
+
+            table.innerHTML = ''
+
+            if (user.length > 0) {
+                for (let i = 0; i < user.length; i++) {
+
+                    let name = document.createElement('td')
+                    name.innerText = user[i].first_name + ' ' + user[i].last_name
+                    name.classList.add('truncate')
+                    let admin = document.createElement('td')
+                    admin.innerText = user[i].admin ? 'Admin' : 'Normal'
+                    let email = document.createElement('td')
+                    email.innerText = user[i].mobile + "/" + user[i].email
+                    email.style.maxWidth = '170px'
+                    email.title = user[i].mobile + "/" + user[i].email
+                    email.classList.add('truncate')
+
+                    let tr = document.createElement('tr')
+                    tr.appendChild(name)
+                    tr.appendChild(admin)
+                    tr.appendChild(email)
+                    table.appendChild(tr)
+                }
+            } else {
+
+                table.innerHTML = "<tr><td class='bg-red-800 text-white p-3 '>NO DATA FOUND!</td></tr>"
+
+            }
+        }
+   
+        async function deleteUser(ele) {
+            let cnf = confirm('Are you sure?')
+            if (cnf) {
+                let id = ele.getAttribute('data-id')
+                console.log(id);
+                let userId = JSON.parse(localStorage.getItem('halls-user')).id
+                let res = await fetch(`/admin/users/${id}/delete/${userId}`).then(r => r.json())
+                if (res.code == 200) {
+                    window.location.reload()
+                } else {
+                    alert('Something went wrong? try again')
+                }
+            }
+
+        }
+   </script>
+
+</html>

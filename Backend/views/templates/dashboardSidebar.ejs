@@ -1,0 +1,37 @@
+<div class="w-full">
+    <ul class="text-white w-full">
+        <li class="w-full text-center py-5 border-2 border-pink-500 my-2 overflow-hidden">
+            <strong class="w-full py-5 text-5xl text-pink-500 my-1 px-2">
+                <%= selected.charAt(0).toUpperCase() + selected.slice(1) %>
+            </strong>
+        </li>
+
+        <li
+            class="<%= selected=='dashboard' ? 'bg-yellow-500' : 'bg-pink-700' %> w-full  text-center border-2 border-pink-500 my-2 py-5">
+            <a id="side1" class="adminId w-full py-5 px-20" href="/admin/dashboard">Analytics</a>
+        </li>
+        <li
+            class="<%= selected=='users' ? 'bg-yellow-500' : 'bg-pink-700' %> w-full  text-center border-2 border-pink-500 my-2 py-5">
+            <a id="side2" class="adminId w-full py-5 px-20" href="/admin/users">Users</a>
+        </li>
+        <li
+            class="<%= selected=='orders' ? 'bg-yellow-500' : 'bg-pink-700' %> w-full  text-center border-2 border-pink-500 my-2 py-5">
+            <a id="side3" class="adminId w-full py-5 px-20" href="/admin/orders">Orders</a>
+        </li>
+        <li
+            class="<%= selected=='products' ? 'bg-yellow-500' : 'bg-pink-700' %> w-full  text-center border-2 border-pink-500 my-2 py-5">
+            <a id="side4" class="adminId w-full py-5 px-20" href="/admin/products">Products</a>
+        </li>
+        <li
+            class="<%= selected=='outlets' ? 'bg-yellow-500' : 'bg-pink-700' %> w-full  text-center border-2 border-pink-500 my-2 py-5">
+            <a id="side5" class="adminId w-full py-5 px-20" href="/admin/outlets">Outlets</a>
+        </li>
+
+        <script>
+            let aId = JSON.parse(localStorage.getItem('halls-user')).id
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`side${i + 1}`).href += '?id=' + aId
+            }
+        </script>
+    </ul>
+</div>

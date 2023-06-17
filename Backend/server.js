@@ -18,9 +18,13 @@ const crypto = require("crypto");
 const AppError = require("./utils/appError");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
+const admin = require("./routes/adminRoute");
+const favicon = require("serve-favicon");
+const addressApis = require("./routes/addressApisRoute");
 require("dotenv").config()
 
 const app = express();
+
 
 
 var imageKit = new ImageKit({
@@ -33,15 +37,15 @@ const db = dbConnection();
 
 app.set("db", db);
 
-var imgUrl = imageKit.url({
-    path: "/product-images/photo.jpg",
-    urlEndpoint: process.env.URL_END_PRODUCT_IMG,
-    transformation: [{
-        width: "300",
-        height: "400",
-    }],
-    signed: true
-})
+// var imgUrl = imageKit.url({
+//     path: "/product-images/photo.jpg",
+//     urlEndpoint: process.env.URL_END_PRODUCT_IMG,
+//     transformation: [{
+//         width: "300",
+//         height: "400",
+//     }],
+//     signed: true
+// })
 
 //bootstrap
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
@@ -51,28 +55,22 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 const PORT = process.env.PORT || 5000;
 
-
 app.use(bodyParser({ extended: true }))
+app.use(express.json())
 
 app.use(cookieParser())
 
 app.use(
     session({
+        genid: function (req) {
+            return crypto.randomUUID();// use UUIDs for session IDs
+        },
         key: "halls_user_auth",
         secret: process.env.SITE_SECRET,
         saveUninitialized: false,
-        cookie: { maxAge: 1000 * 60 * 60 * 24 },
-        resave: false,
+        cookie: { maxAge: 3600000 },
+        resave: false
     }))
-
-
-app.use((req, res, next) => {
-    if (req.session.user && req.cookies.user_lid) {
-        res.redirect("/")
-    }
-    next();
-})
-
 
 app.use(flash())
 
@@ -83,6 +81,9 @@ app.use(fileUpload({
 
 app.use(express.static(path.join(__dirname, "/views/public")))
 
+app.use(favicon(path.join(__dirname, 'views/public/brand', 'c.ico')))
+//app.get('/favicon.ico', (req, res) => res.sendFile('./views/public/brand/c.png'));
+
 //ejs part 
 app.set("view engine", "ejs")
 app.set('views', path.join(__dirname, '/views'));
@@ -91,7 +92,6 @@ app.set('views', path.join(__dirname, '/views'));
 log(app);
 
 app.get("/", (req, res) => {
-    console.log(req.session);
     res.render("html/index");
 })
 
@@ -141,6 +141,21 @@ app.use("/payment", (req, res, next) => {
     next();
 }, payment)
 
+//addressDataApi
+app.use("/addressData", (req, res, next) => {
+    req.db = db;
+    req.imageKit = imageKit;
+    next();
+}, addressApis)
+
+
+//admin
+app.use("/admin", (req, res, next) => {
+    req.db = db;
+    req.imageKit = imageKit;
+    next();
+}, admin)
+
 //error
 app.get('/error', (req, res) => {
     res.render("html/error", { error: "Something went wrong", status: 500 })
@@ -150,14 +165,14 @@ app.get('*', function (req, res, next) {
     next(new AppError(`Page not foung for the path = ${req.path}`, 404))
 });
 
-app.use((err, req, res, next) => {
-    const status = err.status || 500;
-    res.status(status).json({
-        success: 0,
-        status: status,
-        message: err
-    })
-})
+// app.use((err, req, res, next) => {
+//     const status = err.status || 500;
+//     res.status(status).json({
+//         success: 0,
+//         status: status,
+//         message: err
+//     })
+// })
 
 app.get("/places?", (req, res) => {
     console.log("running");

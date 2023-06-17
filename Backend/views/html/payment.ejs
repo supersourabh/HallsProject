@@ -1,288 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/output.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <title>Payment | CakeHalls.in</title>
-</head>
-
-<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
-
-    <%- include("../templates/header.ejs") %>
+<%- include("../templates/head.ejs" , {title: 'Payment' }) %>
 
 
-        <main class="flex flex-col lg:flex-row">
-            <div class="lg:w-1/2 flex justify-center items-center w-full border-r-2 mt-2">
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
 
-                <ul class="flex flex-col w-full lg:w-4/5">
-                    <li class="text-gray-600 text-center text-3xl font-bold underline p-2">
-                        <h1>Choose Outlet</h1>
-                    </li>
-                    <div id="error" class="error text-red-500 text-sm text-center">
-
-                    </div>
-                    <li class="flex flex-row items-center">
-                        <label for="state" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 min-w-fit text-center">Select
-                            State</label>
-                        <select name="state" id="state" required class="px-3 py-3 m-5 w-2/5">
-                            <option value="select">Select</option>
-                            <% for(let i=0 ; i<states.length ; i++ ){%>
-                                <option value="<%= states[i].state %>">
-                                    <%= states[i].state %>
-                                </option>
-                                <% } %>
-                        </select>
-                        <button id="stateButton" class="px-10 py-3 bg-green-500 rounded-lg"
-                            onclick="fetchCities()">Get</button>
-                    </li>
-                    <li class="flex flex-row items-center">
-                        <label for="city" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select City</label>
-                        <select name="city" id="city" required class="px-3 py-3 m-5 w-2/5">
-                            <option value="select">Select</option>
-
-                        </select>
-                        <button id="cityButton" disabled class="px-10 py-3 bg-green-500 rounded-lg"
-                            onclick="fetchPlaces()">Get</button>
-                    </li>
-                    <li class="flex flex-row items-center">
-                        <label for="place" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select Place</label>
-                        <select name="place" id="place" required class="px-3 py-3 m-5 w-2/5">
-                            <option value="select">Select</option>
-
-                        </select>
-                        <button id="placeButton" class="px-10 py-3 bg-green-500 rounded-lg" disabled
-                            onclick="goToDate()">Get</button>
-                    </li>
-                    <li class="flex flex-row items-center">
-                        <label for="date" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select date</label>
-                        <input type="date" required min="<%= new Date().toISOString().split('T')[0] %>" name="date"
-                            id="date" class="px-3 py-3 m-5 w-2/5">
-                        </select>
-                        <button id="dateButton" class="px-10 py-3 bg-green-500 rounded-lg" disabled
-                            onclick="fetchSlots()">
-                            Get
-                        </button>
+        <%- include("../templates/header.ejs") %>
 
 
-                    </li>
-                    <li class="flex flex-row items-center">
-                        <label for="slot" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select Slot</label>
-                        <select name="slot" id="slot" class="px-3 py-3 m-5 w-2/5">
-                            <option value="select">Select</option>
-                        </select>
-                        <button id="slotButton" class="px-10 py-3 bg-yellow-500 rounded-lg" disabled onclick="pay()">
-                            Next
-                        </button>
-                    </li>
-                </ul>
-            </div>
+            <main class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 flex justify-center items-center w-full border-r-2 mt-2">
 
-            <!-- Razor pay payment button section -->
-            <div class="flex flex-col justify-center items-center lg:w-1/2 mt-5">
-                <div class="w-2/3 flex flex-col">
-                    <div class="lg:p-10 overflow-hidden">
-                        <img class="w-fit h-fit" src="/payment.svg" alt="payment">
-                    </div>
-                    <strong class="text-grey-300 py-10">
-                        We are happy to accept all the payments with Credit Cart / Debit Card / UPI / QR / Others.
-                        Be happy!
-                    </strong>
-                    <button class="px-10 py-3 border-2 rounded-lg bg-gray-300 w-fit" disabled
-                        id="rzp-button1">Pay</button>
+                    <ul class="flex flex-col w-full lg:w-4/5">
+                        <li class="text-gray-600 text-center text-3xl font-bold underline p-2">
+                            <h1>Choose Outlet</h1>
+                        </li>
+                        <div id="error" class="error text-red-500 text-sm text-center">
+
+                        </div>
+                        <li class="flex flex-row items-center">
+                            <label for="state" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 min-w-fit text-center">Select
+                                State</label>
+                            <select name="state" id="state" required class="px-3 py-3 m-5 w-2/5"
+                                onchange="fetchCities()">
+                                <option value="select">Select</option>
+                                <% for(let i=0 ; i<states.length ; i++ ){%>
+                                    <option value="<%= states[i].state %>">
+                                        <%= states[i].state %>
+                                    </option>
+                                    <% } %>
+                            </select>
+                        </li>
+                        <li class="flex flex-row items-center">
+
+                            <label for="city" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select
+                                City</label>
+                            <select name="city" id="city" required class="px-3 py-3 m-5 w-2/5" onchange="fetchPlaces()">
+                                <option value="select">Select</option>
+
+                            </select>
+
+                        </li>
+                        <li class="flex flex-row items-center">
+                            <label for="place" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select
+                                Place</label>
+                            <select name="place" id="place" required class="px-3 py-3 m-5 w-2/5"
+                                onchange="fetchOutlets()">
+                                <option value="select">Select</option>
+
+                            </select>
+
+                        </li>
+                        <li class="flex flex-row items-center">
+                            <label for="outlet" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select
+                                Outlet</label>
+                            <select name="outlet" id="outlet" required class="px-3 py-3 m-5 w-2/5"
+                                onchange="goToDate()">
+                                <option value="select">Select</option>
+                            </select>
+                        </li>
+                        <li class="flex flex-row items-center">
+                            <label for="date" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select
+                                date</label>
+                            <input type="date" required min="<%= new Date().toISOString().split('T')[0] %>" name="date"
+                                id="date" class="px-3 py-3 m-5 w-2/5" onchange="fetchSlots()">
+                        </li>
+                        <li class="flex flex-row items-center">
+                            <label for="slot" class="bg-gray-400 lg:px-10 py-3 m-5 w-2/5 text-center">Select
+                                Slot</label>
+                            <select name="slot" id="slot" class="px-3 py-3 m-5 w-2/5" onchange="pay()">
+                                <option value="select">Select</option>
+                            </select>
+                            <!-- <button id="slotButton" class="px-10 py-3 bg-yellow-500 rounded-lg" disabled
+                                onclick="pay()">
+                                Next
+                            </button> -->
+                        </li>
+                    </ul>
                 </div>
-            </div>
 
-            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-            <script>
-                var options = {
-                    "key": "rzp_test_0ioVaLBRl2dFuN", // Enter the Key ID generated from the Dashboard
-                    "amount": "<%= order.amount %>", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-                    "currency": "INR",
-                    "name": "client_name",
-                    "description": "order_bdhalls_12345",
-                    "order_id": "<%= order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                    "handler": async function (response) {
+                <!-- Razor pay payment button section -->
+                <div class="flex flex-col justify-center items-center lg:w-1/2 mt-5">
+                    <div class="w-2/3 flex flex-col">
+                        <div class="lg:p-10 overflow-hidden">
+                            <img class="w-fit h-fit" src="/payment.svg" alt="payment">
+                        </div>
+                        <strong class="text-grey-300 py-10">
+                            We are happy to accept all the payments with Credit Cart / Debit Card / UPI / QR / Others.
+                            Be happy!
+                        </strong>
+                        <div id="session" class="text-red-700 font-bold">
 
-                        let state = document.getElementById("state").value
-                        let city = document.getElementById("city").value
-                        let place = document.getElementById("place").value
-                        let date = document.getElementById("date").value
-                        let slot = document.getElementById("slot").value
-                        let productsList = "<%= products %>";
+                        </div>
+                        <button class="px-10 py-3 border-2 rounded-lg bg-gray-300 w-fit" disabled
+                            id="rzp-button1">Pay</button>
+                    </div>
+                </div>
+                </div>
 
-                        let address = {
-                            state: state,
-                            city: city,
-                            place: place,
-                            date: date,
-                            slot: slot,
-                            products: productsList
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <script>
+                    var options = {
+                        "key": "rzp_test_0ioVaLBRl2dFuN", // Enter the Key ID generated from the Dashboard
+                        "amount": "<%= order.amount %>", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "currency": "INR",
+                        "name": JSON.parse(localStorage.getItem('halls-user')).first_name + " " + JSON.parse(localStorage.getItem('halls-user')).last_name,
+                        "description": "order_" + JSON.parse(localStorage.getItem('halls-user')).id,
+                        "order_id": "<%= order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "handler": async function (response) {
 
+                            let state = document.getElementById("state").value
+                            let city = document.getElementById("city").value
+                            let place = document.getElementById("place").value
+                            let outletId = document.getElementById("outlet").value
+                            let date = document.getElementById("date").value
+                            let slot = document.getElementById("slot").value
+                            let productsList = "<%= products %>";
+
+                            let address = {
+                                userId: JSON.parse(localStorage.getItem('halls-user')).id,
+                                state: state,
+                                city: city,
+                                place: place,
+                                outletId: outletId,
+                                date: date,
+                                slot: slot,
+                                products: productsList
+
+                            }
+
+                            let res = await fetch("/payment/verify/signiture", {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ response: response, address: address })
+                            }).then(res => res.json())
+
+                            if (res.status == 200) {
+                                document.getElementById('rzp-button1').disable = true;
+                                window.location.href = res.url;
+                            } else {
+                                alert(res.errorMessage)
+                            }
+                        },
+                        "prefill": {
+                            "name": JSON.parse(localStorage.getItem('halls-user')).first_name + " " + JSON.parse(localStorage.getItem('halls-user')).last_name,
+                            "email": JSON.parse(localStorage.getItem('halls-user')).email,
+                            "contact": JSON.parse(localStorage.getItem('halls-user')).mobile
+                        },
+                        "notes": {
+                            "service": JSON.parse(localStorage.getItem('halls-user')).id + "/" + JSON.parse(localStorage.getItem('halls-user')).mobile + "/" + JSON.parse(localStorage.getItem('halls-user')).email
+                        },
+                        "theme": {
+                            "color": "#fa91c1"
                         }
-
-                        let res = await fetch("/payment/verify/signiture", {
-                            method: "POST",
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ response: response, address: address })
-                        }).then(res => res.json())
-
-                        console.log(res);
-
-                        if (res.status == 200) {
-                            document.getElementById('rzp-button1').disable = true;
-                            window.location.href = res.url;
-                        } else {
-                            window.location.href = res.url;
-                        }
-                    },
-                    "prefill": {
-                        "name": "client_namer",
-                        "email": "client_mail@example.com",
-                        "contact": "6362579248"
-                    },
-                    "notes": {
-                        "service": "Cake halls online services"
-                    },
-                    "theme": {
-                        "color": "#fa91c1"
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on('payment.failed', function (response) {
+                        alert("error occured in the payment process");
+                    });
+                    document.getElementById('rzp-button1').onclick = function (e) {
+                        rzp1.open();
+                        e.preventDefault();
                     }
-                };
-                var rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function (response) {
-                    alert("error occured in the payment process");
-                });
-                document.getElementById('rzp-button1').onclick = function (e) {
-                    rzp1.open();
-                    e.preventDefault();
-                }
-            </script>
-            <script>
-                async function fetchCities() {
+                </script>
+                <script>
+                    async function fetchCities() {
 
-                    let state = document.getElementById('state');
-                    if (state.value != "select") {
+                        let state = document.getElementById('state');
+                        if (state.value != "select") {
 
-                        let stateButton = document.getElementById('stateButton');
-                        document.getElementById('cityButton').disabled = false;
+                            let city = document.getElementById('city');
+                            city.innerHTML="<option value='select'>Select</option>"
+                            let response = await fetch('/payment/address/cities?state=' + state.value).then(res => res.json())
+                            if (response.error) {
+                                document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
+                            } else {
+                                document.getElementById("error").innerHTML = ""
+                                for (let i = 0; i < response.cities.length; i++) {
+                                    let opt = document.createElement('option')
+                                    opt.value = response.cities[i].city;
+                                    opt.innerText = response.cities[i].city;
+                                    city.appendChild(opt);
+                                }
+                                city.focus()
+
+                            }
+                        } else {
+                            alert("Choose State")
+                        }
+                    }
+
+                    async function fetchPlaces() {
+
+                        let state = document.getElementById('state').value;
                         let city = document.getElementById('city');
-                        let response = await fetch('/payment/address/cities?state=' + state.value).then(res => res.json())
-                        if (response.error) {
-                            document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
-                        } else {
-                            document.getElementById("error").innerHTML = ""
-                            for (let i = 0; i < response.cities.length; i++) {
-                                let opt = document.createElement('option')
-                                opt.value = response.cities[i].city;
-                                opt.innerText = response.cities[i].city;
-                                city.appendChild(opt);
+                        if (city.value != "select") {
+
+                            let place = document.getElementById('place');
+                            place.innerHTML="<option value='select'>Select</option>"
+                            let response = await fetch('/payment/address/places?city=' + city.value + "&state=" + state).then(res => res.json())
+                            if (response.error) {
+                                document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
+                            } else {
+                                document.getElementById("error").innerHTML = ""
+                                for (let i = 0; i < response.places.length; i++) {
+                                    let opt = document.createElement('option')
+                                    opt.value = response.places[i].place
+                                    opt.innerText = response.places[i].place
+                                    place.appendChild(opt);
+                                }
+
+                                place.focus()
+
+                                state = response.state
+                                city.value = response.city
+
                             }
-
-                            state.disabled = true
-                            stateButton.disabled = true
-                            stateButton.style.backgroundColor = "#E2E5DE"
-                            stateButton.style.opacity = 0.5;
+                        } else {
+                            alert("Choose City")
                         }
-                    } else {
-                        alert("Choose State")
                     }
-                }
 
-                async function fetchPlaces() {
+                    async function fetchOutlets() {
 
-                    document.getElementById('placeButton').disabled = false;
-                    let state = document.getElementById('state').value;
-                    let city = document.getElementById('city');
-                    if (city.value != "select") {
-
-                        let cityButton = document.getElementById('cityButton');
+                        let state = document.getElementById('state').value;
+                        let city = document.getElementById('city').value;
                         let place = document.getElementById('place');
-                        let response = await fetch('/payment/address/places?city=' + city.value + "&state=" + state).then(res => res.json())
-                        if (response.error) {
-                            document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
-                        } else {
-                            document.getElementById("error").innerHTML = ""
-                            for (let i = 0; i < response.places.length; i++) {
-                                let opt = document.createElement('option')
-                                opt.value = response.places[i].place + " " + response.places[i].outletId;
-                                opt.innerText = response.places[i].place + "-" + response.places[i].outletId;
-                                place.appendChild(opt);
+                        if (place.value != "select") {
+                            let outlet = document.getElementById('outlet');
+                            outlet.innerHTML="<option value='select'>Select</option>"
+                            let response = await fetch('/payment/address/outlets?place=' + place.value + '&city=' + city + "&state=" + state).then(res => res.json())
+                            if (response.error) {
+                                document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
+                            } else {
+                                document.getElementById("error").innerHTML = ""
+                                for (let i = 0; i < response.outlets.length; i++) {
+                                    let opt = document.createElement('option')
+                                    opt.value = response.outlets[i].id
+                                    opt.innerText = response.outlets[i].name
+                                    outlet.appendChild(opt);
+                                }
+
+                                outlet.focus()
+                                state = response.state
+                                city = response.city
+                                place.value = response.place
+
                             }
-                            city.disabled = true
-                            cityButton.disabled = true
-                            cityButton.style.backgroundColor = "#E2E5DE"
-                            cityButton.style.opacity = 0.5;
-                        }
-                    } else {
-                        alert("Choose City")
-                    }
-                }
-
-                async function goToDate() {
-                    let placeButton = document.getElementById('placeButton');
-                    let place = document.getElementById('place');
-                    if (place.value != 'select') {
-                        place.disabled = true;
-                        placeButton.disabled = true;
-                        placeButton.style.backgroundColor = "#E2E5DE"
-                        placeButton.style.opacity = 0.5;
-                        document.getElementById('dateButton').disabled = false;
-                    } else {
-                        alert('Choose place')
-                    }
-                }
-
-                async function fetchSlots() {
-
-                    document.getElementById('dateButton').disabled = false;
-                    let state = document.getElementById('state').value;
-                    let city = document.getElementById('city').value;
-                    let place = document.getElementById('place');
-                    let date = document.getElementById('date');
-                    if (date.value) {
-
-                        let dateButton = document.getElementById('dateButton');
-
-                        let response = await fetch('/payment/address/date?date=' + date.value + '&city=' + city + "&state=" + state + "&placeOid=" + place.value).then(res => res.json())
-                        if (response.error) {
-                            document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
                         } else {
-                            document.getElementById("error").innerHTML = ""
-                            for (let i = 0; i < response.slots.length; i++) {
-                                let opt = document.createElement('option')
-                                opt.value = response.slots[i];
-                                opt.innerText = response.slots[i];
-                                slot.appendChild(opt);
-                            }
-
-                            date.disabled = true
-                            date.style.opacity = 0.7
-                            dateButton.style.backgroundColor = "#E2E5DE"
-                            dateButton.style.opacity = 0.5;
-                            document.getElementById('slotButton').disabled = false;
+                            alert("Choose City")
                         }
-                    } else {
-                        alert("Choose Date")
                     }
 
-                }
-                async function pay() {
+                    async function goToDate() {
+                        let place = document.getElementById('outlet');
+                        let date = document.getElementById('date');
+                        if (place.value != 'select') {
+                            date.focus()
+                        } else {
+                            alert('Choose place')
+                        }
+                    }
 
-                    document.getElementById('slotButton').disabled = true;
-                    let payButton = document.getElementById('rzp-button1');
-                    payButton.disabled = false;
-                    payButton.style.backgroundColor = "#F57286"
-                }
+                    async function fetchSlots() {
+                        let state = document.getElementById('state').value;
+                        let city = document.getElementById('city').value;
+                        let place = document.getElementById('place');
+                        let outlet = document.getElementById('outlet');
+                        let date = document.getElementById('date');
+                        let slot = document.getElementById('slot')
 
-            </script>
-        </main>
-        <%- include("../templates/footer.ejs") %>
+                        slot.innerHTML = '';
+                        if (date.value) {
+                            let response = await fetch('/payment/address/date?date=' + date.value + '&city=' + city + "&state=" + state + "&place=" + place.value + "&outletId=" + outlet.value).then(res => res.json())
+                            if (response.error) {
+                                document.getElementById("error").innerHTML = `Error : status : ${response.status} , message : ${response.error}`
+                            } else {
+                                document.getElementById("error").innerHTML = ""
+                                for (let i = 0; i < response.slots.length; i++) {
+                                    let opt = document.createElement('option')
+                                    opt.value = response.slots[i];
+                                    opt.innerText = response.slots[i];
+                                    slot.appendChild(opt);
+                                }
 
-</body>
+                                state = response.state
+                                city = response.city
+                                place.value = response.place
+                                document.getElementById('slotButton').disabled = false;
+                            }
+                        } else {
+                            alert("Choose Date")
+                        }
+
+                    }
+                    async function pay() {
+                        let response = await fetch('/payment/address/slot').then(e => e.json())
+                        console.log(response);
+                        if (response.status != 200) {
+                            alert("Error ")
+                            document.getElementById('session').innerHTML = response.message + '<a class="rounded-lg text-blue-500 px-2 py-1 border-2 border-gray-700" href="/user/login">Login</a>';
+                        } else {
+                            let payButton = document.getElementById('rzp-button1');
+                            payButton.disabled = false;
+                            payButton.style.backgroundColor = "#F57286"
+                        }
+
+                    }
+
+                </script>
+            </main>
+            <%- include("../templates/footer.ejs") %>
+
+    </body>
 
 </html>

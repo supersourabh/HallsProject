@@ -1,179 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/output.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <title>
-        Cart | CakeHalls.in
-    </title>
-</head>
+<%- include("../templates/head.ejs" , {title: 'Cart' }) %>
 
-<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
 
-    <%- include("../templates/header.ejs") %>
-        <main class="flex flex-col justify-center items-center lg:flex-row">
-            <div class="flex-1 flex flex-col lg:w-1/2 p-3">
-                <!-- heading  -->
-                <div class="text-5xl font-bold text-gray-700 underline">
-                    Cart
-                </div>
-                <!-- cake -->
-                <div>
-                    <strong class="text-3xl text-yellow-700">Cake :</strong>
-                    <% if(cake.length> 0){ %>
-                        <div id="<%= cake[0].id  %>" class="cakes flex m-2 p-2 rounded-lg w-full items-center ">
-                            <div class="h-32 w-32 overflow-hidden rounded-lg">
-                                <image class="h-fit transform transition duration-100 scale-105 hover:scale-100"
-                                    src="<%= cake[0].image %>" alt="img">
-                            </div>
-                            <div class="w-full h-32 flex flex-col lg:flex-row p-3 overflow-hidden items-center">
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" style="scrollbar-width: none;">
 
-                                <div class="flex-1 flex flex-col justify-between items-center px-3 w-1/2">
-                                    <p class="py-1 break-words text-md font-bold w-full">
-                                        <%= cake[0].name %>
-                                    </p>
+        <%- include("../templates/header.ejs") %>
+            <main class="flex flex-col justify-center items-center lg:flex-row">
+                <div class="flex-1 flex flex-col lg:w-1/2 p-3">
+                    <!-- heading  -->
+                    <div class="text-5xl font-bold text-gray-700 underline">
+                        Cart
+                    </div>
+                    <!-- cake -->
+                    <div>
+                        <% if(items.length> 0){ %>
+                            <% for(let i=0 ; i<items.length ; i++){ %>
+                                <div id="<%= items[i].id  %>"
+                                    class="cakes flex m-2 p-2 rounded-lg w-full items-center ">
+                                    <div class="h-32 w-32 overflow-hidden rounded-lg">
+                                        <image class="h-fit transform transition duration-100 scale-105 hover:scale-100"
+                                            src="<%= items[i].image %>" alt="img">
+                                    </div>
+                                    <div class="w-full h-32 flex flex-col lg:flex-row p-3 overflow-hidden items-center">
+
+                                        <div class="flex-1 flex flex-col justify-between items-center px-3 w-1/2">
+                                            <p class="py-1 break-words text-center text-md font-bold w-full">
+                                                <%= items[i].name %>
+                                            </p>
+                                        </div>
+                                        <div class="flex-1 flex flex-col px-3 w-1/2">
+                                            <p
+                                                class="py-1 break-words text-md font-bold w-full bg-yellow-500 text-center rounded-md">
+                                                <%= items[i].category.toUpperCase() %>
+                                            </p>
+                                        </div>
+                                        <p class="flex-1 px-3 text-sm w-1/3">
+                                            Halls Charge+ <strong>
+                                                <%= items[i].price %>₹
+                                            </strong>
+                                        </p>
+                                        <div class="w-1/3">
+                                            <a id="<%= items[i].id %>"
+                                                href="/cart?ids=<%= pids.replace(items[i].category+'_'+items[i].id,'null') %>"
+                                                class="flex-1 flex bg-pink-600 rounded-md p-1 text-white m-3 w-fit ">
+                                                <b class="px-1">REMOVE</b>
+                                                <!-- <b class="border-l-2 border-gray-200 flex justify-center items-center px-1">-</b> -->
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="flex-1 px-3 text-sm w-1/3">
-                                    Halls Charge+ ₹<strong>
-                                        <%= cake[0].price %>
-                                    </strong>
-                                </p>
-                                <div class="w-1/3">
-                                    <a id="<%= cake[0].id  %>"
-                                        href="/cart?cake=<%= 'null'+'&hat='+hatId+'&propz='+propzId %>"
-                                        class="flex-1 flex bg-pink-600 rounded-md p-1 text-white m-3 w-fit ">
-                                        <b class="px-1">REMOVE</b>
-                                        <!-- <b class="border-l-2 border-gray-200 flex justify-center items-center px-1">-</b> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <%}else{%>
-                            <div class="text-green-700 font-bold p-3 bg-yellow-300 rounded-lg w-fit">
-                                Default cake selected
-                            </div>
-                            <%}%>
-                </div>
-                <div>
-                    <strong class="text-3xl text-yellow-700">Hat :</strong>
-                    <% if(hat.length> 0){ %>
-                        <div id="<%= hat[0].id  %>" class="cakes flex m-2 p-2 rounded-lg w-full items-center ">
-                            <div class="h-32 w-32 overflow-hidden rounded-lg">
-                                <image class="h-fit transform transition duration-100 scale-105 hover:scale-100"
-                                    src="<%= hat[0].image %>" alt="img">
-                            </div>
-                            <div class="w-full flex flex-col lg:flex-row p-3 overflow-hidden items-center">
 
-                                <div class="flex-1 flex flex-col justify-between items-center px-3 w-1/2">
-                                    <p class="py-1 break-words text-md font-bold w-full">
-                                        <%= hat[0].name %>
-                                    </p>
-
-                                </div>
-                                <p class="flex-1 px-3 text-sm w-1/3">
-                                    Halls Charge+ ₹<strong>
-                                        <%= hat[0].price %>
-                                    </strong>
-                                </p>
-                                <div class="w-1/3">
-                                    <a id="<%= hat[0].id  %>"
-                                        href="/cart?cake=<%= cakeId+'&hat=null'+'&propz='+propzId %>"
-                                        class="flex-1 flex bg-pink-600 rounded-md p-1 text-white m-3 w-fit">
-                                        <b class="px-1">REMOVE</b>
-                                        <!-- <b class="border-l-2 border-gray-200 flex justify-center items-center px-1">-</b> -->
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <%}else{%>
-                            <div class="text-green-700 font-bold p-3 bg-yellow-300 rounded-lg w-fit">
-                                Default hat selected
-                            </div>
-                            <%}%>
-                </div>
-                <div>
-                    <strong class="text-3xl text-yellow-700">Propz :</strong>
-                    <% if(propz.length> 0){ %>
-                        <div id="<%= propz[0].id  %>" class="cakes flex m-2 p-2 rounded-lg w-full items-center ">
-                            <div class="h-32 w-32 overflow-hidden rounded-lg">
-                                <image class="h-fit transform transition duration-100 scale-105 hover:scale-100"
-                                    src="<%= propz[0].image %>" alt="img">
-                            </div>
-                            <div class="w-full flex flex-col lg:flex-row p-3 overflow-hidden items-center">
-
-                                <div class="flex-1 flex flex-col justify-between items-center px-3 w-1/2">
-                                    <p class="py-1 break-words text-md font-bold w-full">
-                                        <%= propz[0].name %>
-                                    </p>
-                                </div>
-                                <p class="flex-1 px-3 text-sm w-1/3">
-                                    Halls Charge+ ₹<strong>
-                                        <%= propz[0].price %>
-                                    </strong>
-                                </p>
-                                <div class="w-1/3">
-                                    <a id="<%= propz[0].id  %>"
-                                        href="/cart?cake=<%= cakeId+'&hat='+hatId+'&propz=null' %>"
-                                        class="flex-1 flex bg-pink-600 rounded-md p-1 text-white m-3 w-fit">
-                                        <b class="px-1">REMOVE</b>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <%}else{%>
-                            <div class="text-green-700 font-bold p-3 bg-yellow-300 rounded-lg w-fit">
-                                Default propz selected
-                            </div>
-                            <%}%>
-                </div>
+                                <%}}else{%>
+                                    <div class="text-green-700 font-bold p-3 my-3 bg-yellow-300 rounded-lg w-fit">
+                                        Default Products  Aplied
+                                    </div>
+                                    <%}%>
+                    </div>
 
 
-            </div>
-            <div class="flex-1 flex flex-col justify-start items-center border-l-2 mt-2 lg:w-1/2">
-                <div class="flex justify-start items-center py-5 text-3xl text-pink-700">
-                    <strong>Cost Calculation </strong>
 
                 </div>
-                <ul class="w-3/5 border-2 border-pink-500 m-5 p-5 rounded-lg">
-                    <li class="flex justify-between items-center py-3">
-                        <strong>Item Total </strong>
-                        <b>
-                            <%= sumTotal %>
-                        </b>
-                    </li>
-                    <li class="flex justify-between items-center py-3">
-                        <strong>Service Cost </strong>
-                        <b>
-                            <%= service_cost %>
-                        </b>
-                    </li>
-                    <li class="flex justify-between items-center py-3">
-                        <strong> Total Tax </strong>
-                        <b>
-                            <%= tax %>
-                        </b>
-                    </li>
-                    <li class="flex justify-between items-center py-3 text-2xl border-t-2 border-pink-500">
-                        <strong> Total </strong>
-                        <b>
-                            ₹ <%= total %>
-                        </b>
-                    </li>
-                </ul>
-                <form id="genForm" action="/payment/generate?pids=<%= cakeId+','+hatId+','+propzId %>" method="post" c>
-                    <input type="submit"
-                        class=" border-2 border-green-400 text-white bg-green-400 rounded-md p-2 transform transition duration-150 cursor-pointer hover:bg-green-600"
-                        value="Proceed">
-                </form>
-            </div>
-            </div>
-        </main>
-        <%- include("../templates/footer.ejs") %>
+                <div class="flex-1 flex flex-col justify-start items-center border-l-2 mt-2 w-full lg:w-1/2">
+                    <div class="flex justify-start items-center py-5 text-3xl text-pink-700">
+                        <strong>Cost Calculation </strong>
 
-</body>
+                    </div>
+                    <ul class="w-3/5 border-2 border-pink-500 m-5 p-5 rounded-lg">
+                        <li class="flex justify-between items-center py-3">
+                            <strong>Item Total </strong>
+                            <b>
+                                <%= sumTotal %>
+                            </b>
+                        </li>
+                        <li class="flex justify-between items-center py-3">
+                            <strong>Service Cost </strong>
+                            <b>
+                                <%= service_cost %>
+                            </b>
+                        </li>
+                        <li class="flex justify-between items-center py-3">
+                            <strong> Total Tax </strong>
+                            <b>
+                                <%= tax %>
+                            </b>
+                        </li>
+                        <li class="flex justify-between items-center py-3 text-2xl border-t-2 border-pink-500">
+                            <strong> Total </strong>
+                            <b>
+                                ₹ <%= total %>
+                            </b>
+                        </li>
+                    </ul>
+                    <a id="genForm" href="/payment/generate?pids=<%= pids %>">
+                        <span
+                            class=" border-2 border-green-400 text-white bg-green-400 rounded-md p-2 transform transition duration-150 cursor-pointer hover:bg-green-600">
+                            Proceed
+                        </span>
+                    </a>
+                </div>
+                </div>
+            </main>
+            <%- include("../templates/footer.ejs") %>
+
+    </body>
 
 </html>

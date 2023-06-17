@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/output.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <title>Home | CakeHalls.in</title>
-</head>
+<%- include("../templates/head.ejs" , {title: 'Home'}) %>
+
 
 <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat">
 
@@ -18,7 +12,7 @@
                 <%- include('../templates/body-middle.ejs'); %>
         </main>
 
-    <%- include("../templates/footer.ejs") %>
+        <%- include("../templates/footer.ejs") %>
 
 
 </body>

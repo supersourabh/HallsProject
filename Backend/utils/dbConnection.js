@@ -7,7 +7,7 @@ function dbConnection() {
         password: process.env.LCL_DB_PASS,
         multipleStatements: true
     })
-    dbConn.connect((err) => { err ? console.log(err.message) : console.log("connected") })
+    dbConn.connect((err) => { err ? console.log(err.message) : console.log(`connected with db user ${process.env.LCL_DB_USER}`) })
     return dbConn;
 }
 

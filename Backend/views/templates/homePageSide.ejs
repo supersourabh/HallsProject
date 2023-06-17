@@ -1,0 +1,138 @@
+<div class="absolute overflow-x-scroll scroll-m-0 -left-96 top-0 w-80 backdrop-blur-md bg-white py-10 px-5 max-w-md" id="side" style="background-color: #e5e5f7;background-image:  repeating-linear-gradient(45deg, #df97e3 25%, transparent 25%, transparent 75%, #E7CEE8 75%, #E7CEE8), repeating-linear-gradient(45deg, #E7CEE8 25%, #e5e5f7 25%, #e5e5f7 75%, #E7CEE8 75%, #E7CEE8);background-position: 0 0, 10px 10px;background-size: 20px 20px;
+">
+
+
+    <button class="absolute top-0 right-0 p-2 bg-red-500 rounded m-1" onclick="headerSideToggle()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+
+    <div class="rounded bg-gray-500 py-2 px-5 my-2">
+        <a id="sliderprofile" class="slider flex gap-3 my-2 flex-col justify-center items-center overflow-hidden w-full"
+            href="/profile">
+            <div class="flex-1 w-full flex justify-center items-center">
+                <img id="sliderProfileImage"
+                    class="rounded-sm lg:h-20 h-auto object-contain mix-blend-difference"
+                    src="https://ik.imagekit.io/bdhalls/profile_FdE7woX7K.png?updatedAt=1683974325037&ik-s=a6268b41e64d5ebc57d270abc45e9dee88e0bcfd"
+                    alt="user">
+            </div>
+            Profile
+            <div class="flex-1 flex flex-col">
+                <span id="sliderusername" class="truncate"></span>
+                <span id="slideruseremail" class="truncate text-xs"></span>
+                <span id="sliderUserMobile" class="text-xs"></span>
+            </div>
+        </a>
+    </div>
+    <!-- script for user details -->
+    <script>
+
+        let sliderprofileImage = document.querySelector("#sliderProfileImage")
+        let sliderusername = document.querySelector("#sliderusername")
+        let slideruseremail = document.querySelector("#slideruseremail")
+        let sliderusermobile = document.querySelector("#sliderUserMobile")
+
+        let slideUser = JSON.parse(localStorage.getItem('halls-user'))
+        sliderprofileImage.src = slideUser.profile ? slideUser.profile : "https://ik.imagekit.io/bdhalls/profile_FdE7woX7K.png?updatedAt=1683974325037&ik-s=a6268b41e64d5ebc57d270abc45e9dee88e0bcfd";
+        sliderusername.innerText = (slideUser.first_name || slideUser.last_name) ? slideUser.first_name + " " + slideUser.last_name : "User";
+        slideruseremail.innerText = slideUser.email ?? "Email";
+        sliderusermobile.innerText = slideUser.mobile ?? "Mobile";
+
+    </script>
+
+    <ul class="text-white">
+        <li class="rounded bg-gray-700 py-2 px-5 my-2">
+            <a id="headerSlider" class="slideranch flex gap-3 my-2" href="/admin/dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-pie-chart">
+                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                    <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="rounded bg-gray-700 py-2 px-5 my-2">
+            <a id="headerSlider" class="slideranch flex gap-3 my-2" href="/admin/users">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-user">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Users</span>
+            </a>
+        </li>
+        <li class="rounded bg-gray-700 py-2 px-5 my-2">
+            <a id="headerSlider" class="slideranch flex gap-3 my-2" href="/admin/products">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-layers">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span>Products</span>
+            </a>
+        </li>
+        <li class="rounded bg-gray-700 py-2 px-5 my-2">
+            <a id="headerSlider" class="slideranch flex gap-3 my-2" href="/admin/orders">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-shopping-bag">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Orders</span>
+            </a>
+        </li>
+        <li class="rounded bg-red-400 py-2 px-5 my-2">
+            <a id="headerSlider" class="slideranch flex gap-3 my-2" href="/user/logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-log-out">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+    <!-- using the user defined in header script -->
+    <script>
+        let sliderancs = document.querySelectorAll("#headerSlider");
+        let sliderUserForAnchor = JSON.parse(localStorage.getItem('halls-user'));
+        console.log(sliderancs);
+        for (let sld = 0; sld < sliderancs.length; sld++) {
+            console.log(sliderancs[sld].href);
+            sliderancs[sld].href += "?id=" + sliderUserForAnchor.id
+            console.log(sliderancs[sld].href);
+        }
+    </script>
+</div>
+<script>
+    //sliding aniation script
+    let sideforanimatiom = document.getElementById('side')
+    sideforanimatiom.style.height = screen.height + "px"
+    function headerSideToggle() {
+        sideforanimatiom.classList.toggle('active')
+        sideforanimatiom.style.transition = 'left 0.4s ease'
+
+    }
+</script>
+
+<script>
+
+    let side = document.getElementById('side')
+    side.style.height = screen.height + "px"
+
+    function headerSideToggle() {
+        side.classList.toggle('active')
+        side.style.transition = 'left 0.3s'
+    }
+</script>

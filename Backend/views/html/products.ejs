@@ -1,52 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/output.css">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    <title>
-        Products | CakeHalls.in
-    </title>
-</head>
+<%- include("../templates/head.ejs" , {title: 'Products' }) %>
 
-<body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" onload="removeLC()" style="scrollbar-width: none;">
 
-    <%- include("../templates/header.ejs") %>
+    <body class="bg-gradient-to-b from-pink-400 via-white to-gray-700 bg-no-repeat" onload="removeLC()"
+        style="scrollbar-width: none;">
 
-        <main class="w-full py-5 flex flex-col justify-center items-start">
+        <%- include("../templates/header.ejs") %>
 
-            <%- include("../templates/cakes.ejs") %>
-                <%- include("../templates/hats.ejs") %>
-                    <%- include("../templates/propz.ejs") %>
-                        <div class="w-full flex justify-center items-center border-t-2 m-3 pt-5">
-                            <button id="go" class=" border-2 px-5 py-3 text-white font-bold rounded-md hover:bg-gray-500">
-                                <img src="/cart.svg" alt="cart">cart
-                            </button>
-                            
-                        </div>
+            <main class="w-full py-5 flex flex-col justify-center items-start">
+                <% for(let i=0 ; i< categories.length; i++){ %>
+                    <%- include("../templates/categories.ejs",{categoryList : categoriesList.filter(e=>e.category ==
+                        categories[i].name), category : categories[i].name }) %>
+                        <%}%>
 
-                        <script>
+                            <div class="w-full flex justify-center items-center border-t-2 m-3 pt-5">
+                                <button id="go"
+                                    class=" border-2 px-5 py-3 text-white font-bold rounded-md hover:bg-gray-500">
+                                    <img src="/cart.svg" alt="cart">cart
+                                </button>
+                            </div>
 
-                            function removeLC() {
-                                localStorage.clear("cake");
-                                localStorage.clear("hat");
-                                localStorage.clear("propz");
-                            }
+                            <script>
+                                
 
-                            document.getElementById("go").onclick = () => {
-                                let cake = JSON.parse(localStorage.getItem("cake"));
-                                let hat = JSON.parse(localStorage.getItem("hat"));
-                                let propz = JSON.parse(localStorage.getItem("propz"));
-                                window.location.href = "/cart?cake=" + cake + "&hat=" + hat + "&propz=" + propz;
-                            }
-                        </script>
-                        <%- include("../templates/footer.ejs") %>
+                                let selectedIds = {}
+                                let categories = JSON.parse('<%- JSON.stringify(categories) %>')
+                                for (let i = 0; i < categories.length; i++) {
+                                    selectedIds[categories[i].name] = null
+                                }
 
-        </main>
-</body>
+
+                                function removeLC() {
+                                    categories.forEach(e => {
+                                        localStorage.removeItem(e.name);
+                                    });
+                                }
+
+                                document.getElementById("go").onclick = () => {
+                                    let ids = '';
+                                    console.log(categories);
+                                    for (let c in categories) {
+                                        console.log(categories[c]);
+                                        let data = JSON.parse(localStorage.getItem(categories[c].name));
+                                        ids += data + '|'
+                                    }
+                                    ids = ids.slice(0, ids.length - 1)
+                                    console.log(ids);
+                                    window.location.href = "/cart?ids=" + ids;
+                                }
+                            </script>
+                            <%- include("../templates/footer.ejs") %>
+
+            </main>
+    </body>
 
 
 </html>
